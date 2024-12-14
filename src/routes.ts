@@ -22,7 +22,7 @@ export const apiAuthPrefix = "/api/auth";
  * Users will be redirected to this route upon completing authentication.
  * @constant {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/settings";
+export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
 /**
  * A constant string representing the base public route path.
  * This route is accessible without authentication.
