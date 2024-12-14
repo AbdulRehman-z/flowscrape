@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1733665504341,
-      "tag": "0000_abnormal_talkback",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1733665603218,
-      "tag": "0001_blue_toad",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1733831640082,
-      "tag": "0002_remarkable_chat",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1733932097225,
-      "tag": "0003_typical_dust",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1733985268263,
-      "tag": "0004_green_ogun",
+      "when": 1734164131550,
+      "tag": "0000_famous_sunset_bain",
       "breakpoints": true
     }
   ]
