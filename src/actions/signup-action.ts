@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { signupSchema } from "../schemas/auth-schema";
 import { db } from "../db";
-import { users } from "../db/schema";
+import { users } from "../db/schemas/auth-schema";
 import { hash } from "bcryptjs";
 import { generateVerificationToken } from "@/lib/token";
 import { getUserByEmail } from "@/data/user";
