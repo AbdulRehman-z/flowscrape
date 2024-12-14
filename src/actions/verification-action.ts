@@ -3,7 +3,7 @@
 import { getUserByEmail } from "@/data/user"
 import { getVerificationTokenByToken } from "@/data/verification-token"
 import { db, users } from "@/db"
-import { verificationTokens } from "@/db/schema"
+import { verificationTokens } from "@/db/schemas/auth-schema"
 import { eq } from "drizzle-orm"
 
 export const newVerification = async function (token: string) {
