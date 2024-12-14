@@ -92,7 +92,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       console.log({ token, user })
 
-      const existingUser = await getUserById(token.sub);
+      const existingUser = await getUserById(token.sub); // this is causing problem
       console.log(`existingUser: ${JSON.stringify(existingUser)}`);
       if (existingUser) {
         token.role = existingUser.role;
