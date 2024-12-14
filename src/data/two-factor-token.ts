@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { twoFactorToken } from "@/db/schema";
+import { twoFactorToken } from "@/db/schemas/auth-schema";
 import { eq } from "drizzle-orm";
 
 export const get2FATokenByEmail = async (email: string) => {

@@ -1,5 +1,5 @@
 import { db } from "@/db"
-import { passwordResetTokens } from "@/db/schema"
+import { passwordResetTokens } from "@/db/schemas/auth-schema"
 import { eq } from "drizzle-orm"
 
 export const getPasswordResetTokenByToken = async (token: string): Promise<typeof passwordResetTokens.$inferSelect | null> => {
