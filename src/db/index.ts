@@ -1,12 +1,9 @@
 import { env } from "../schemas/env-schema";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-import * as schema from "./schema";
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
+import * as schema from "./schemas/auth-schema";
 
-const sql = neon(env.DATABASE_URL);
-export const db = drizzle(sql, {
-  // logger: true,
-  schema: schema,
-});
+const queryClient = postgres(env.AUTH_DRIZZLE_URL);
+export const db = drizzle({ client: queryClient });
 
 export const { accounts, users } = schema;
