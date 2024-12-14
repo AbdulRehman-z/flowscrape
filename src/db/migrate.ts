@@ -1,14 +1,11 @@
 import { env } from "../schemas/env-schema";
-import { drizzle } from "drizzle-orm/neon-http";
-import { migrate } from "drizzle-orm/neon-http/migrator";
-import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import postgres from "postgres";
 
-// const db = drizzle(env.DATABASE_URL, {
-//   max: 1,
-// });
 
-const migrationClient = neon(env.DATABASE_URL);
-const db = drizzle(migrationClient);
+const pool = postgres(env.AUTH_DRIZZLE_URL, { max: 1 })
+export const db = drizzle(pool)
 
 async function main() {
   try {
@@ -21,6 +18,7 @@ async function main() {
     console.error(error);
     throw error;
   } finally {
+    await pool.end()
     process.exit(process.exitCode || 0);
   }
 }
@@ -28,4 +26,4 @@ async function main() {
 await main().catch((error) => {
   console.error("Migration failed:", error);
   process.exit(1);
-});
+})
