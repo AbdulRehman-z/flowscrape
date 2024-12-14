@@ -5,7 +5,7 @@ import { get2FAConfirmationByUserId } from "@/data/two-factor-cofirmation";
 import { get2FATokenByEmail } from "@/data/two-factor-token";
 import { getUserByEmail } from "@/data/user";
 import { db } from "@/db";
-import { twoFactorConfirmation, twoFactorToken } from "@/db/schema";
+import { twoFactorConfirmation, twoFactorToken } from "@/db/schemas/auth-schema";
 import { send2FAToken, sendVerificationMail } from "@/lib/mail";
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/token";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
@@ -67,12 +67,11 @@ export const loginAction = async (formData: z.infer<typeof loginSchema>) => {
     }
   }
 
-
   try {
     await signIn("credentials", {
       email,
       password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: "/dashboard",
     });
   } catch (error) {
     if (error instanceof AuthError) {
