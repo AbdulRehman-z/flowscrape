@@ -97,8 +97,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (existingUser) {
         token.role = existingUser.role;
       }
-      // console.log(`token: ${JSON.stringify(token)}`);
-      // console.log(`user: ${JSON.stringify(user)}`);
+
 
       return token;
     },
