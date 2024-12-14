@@ -1,0 +1,8 @@
+services:
+  db:
+    image: postgres:17.2-alpine3.21
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=flowscrape
+    ports:
+       - 5432:5432
