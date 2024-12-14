@@ -7,40 +7,44 @@ import {
 } from "@/routes";
 
 export const middleware = auth((req) => {
-  const isLoggedIn = !!req.auth;
-  const { nextUrl } = req;
+  try {
+    const isLoggedIn = !!req.auth
+    const { nextUrl } = req
+    console.log("isLoggedIn", isLoggedIn)
 
-  const isApiAuthRoute = req.url.startsWith(apiAuthPrefix);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+    const isApiAuthRoute = req.url.startsWith(apiAuthPrefix)
+    const isAuthRoute = authRoutes.includes(nextUrl.pathname)
+    const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
 
-  if (isApiAuthRoute) {
-    return null;
-  }
-
-  if (isAuthRoute) {
-    if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    if (isApiAuthRoute) {
+      return null
     }
-    return null;
-  }
 
-  if (!isPublicRoute && !isLoggedIn) {
-    return Response.redirect(new URL("/auth/login", nextUrl));
-  }
+    if (isAuthRoute) {
+      if (isLoggedIn) {
+        return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+      }
+      return null
+    }
 
-  return null;
-});
+    if (!isPublicRoute && !isLoggedIn) {
+      return Response.redirect(new URL("/auth/login", nextUrl))
+    }
+
+    return null
+  } catch (error) {
+    console.error("Middleware error:", error)
+    // Fallback to login page on error
+    return Response.redirect(new URL("/auth/login", req.nextUrl))
+  }
+})
+
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    // Skip Next.js internals and all static files, unless found in search params
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
+    '/(api|trpc)(.*)',
   ],
-};
+}

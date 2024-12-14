@@ -9,7 +9,7 @@ import { compare } from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { get2FAConfirmationByUserId } from "./data/two-factor-cofirmation";
 import { getUserByEmail, getUserById } from "./data/user";
-import { twoFactorConfirmation, users } from "./db/schema";
+import { twoFactorConfirmation, users } from "./db/schemas/auth-schema";
 import { loginSchema } from "./schemas/auth-schema";
 
 declare module "next-auth" {
@@ -50,114 +50,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account }) {
-
-      console.log("I am 1")
-      console.log("I am 1")
-      console.log("I am 1")
-      console.log("I am 1")
-      console.log("I am 1")
-      console.log({
-        user, account
-      })
-      console.log("I am 1")
-      console.log("I am 1")
-      console.log("I am 1")
-      console.log("I am 1")
-      console.log("I am 1")
-
-
       if (account?.provider !== "credentials") return true;
-
-
-      console.log("I am 2")
-      console.log("I am 2")
-      console.log("I am 2")
-      console.log("I am 2")
-      console.log("I am 2")
-      console.log({
-        user, account
-      })
-      console.log("I am 2")
-      console.log("I am 2")
-      console.log("I am 2")
-      console.log("I am 2")
-      console.log("I am 2")
-
       if (!user?.id) return false;
 
-      console.log("I am 3")
-      console.log("I am 3")
-      console.log("I am 3")
-      console.log("I am 3")
-      console.log("I am 3")
-      console.log({
-        user, account
-      })
-      console.log("I am 3")
-      console.log("I am 3")
-      console.log("I am 3")
-      console.log("I am 3")
-      console.log("I am 3")
-
+      // console.log({ user, account })
 
       const existingUser = await getUserById(user.id);
       if (!existingUser?.emailVerified) {
         return false;
       }
 
-
-      console.log("I am 4")
-      console.log("I am 4")
-      console.log("I am 4")
-      console.log("I am 4")
-      console.log("I am 4")
-      console.log({
-        existingUser
-      })
-      console.log("I am 4")
-      console.log("I am 4")
-      console.log("I am 4")
-      console.log("I am 4")
-      console.log("I am 4")
-
       // check if the user has enabled 2FA
       if (existingUser.isTwoFactorEnabled) {
         const existing2FACofirmation = await get2FAConfirmationByUserId(user.id)
 
-        console.log("I am 5")
-        console.log("I am 5")
-        console.log("I am 5")
-        console.log("I am 5")
-        console.log("I am 5")
-        console.log({
-          existingUser,
-          existing2FACofirmation
-        })
-        console.log("I am 5")
-        console.log("I am 5")
-        console.log("I am 5")
-        console.log("I am 5")
-        console.log("I am 5")
-
-
         if (!existing2FACofirmation) return false
         if (existing2FACofirmation) {
           await db.delete(twoFactorConfirmation).where(eq(twoFactorConfirmation.userId, user.id))
-          console.log("I am 6")
-          console.log("I am 6")
-          console.log("I am 6")
-          console.log("I am 6")
-          console.log("I am 6")
-          console.log({
-            existingUser,
-            existing2FACofirmation
-          })
-          console.log("I am 6")
-          console.log("I am 6")
-          console.log("I am 6")
-          console.log("I am 6")
-          console.log("I am 6")
-
         }
       }
 
@@ -181,8 +90,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (!token.sub) return token;
 
+      console.log({ token, user })
+
       const existingUser = await getUserById(token.sub);
-      // console.log(`existingUser: ${JSON.stringify(existingUser)}`);
+      console.log(`existingUser: ${JSON.stringify(existingUser)}`);
       if (existingUser) {
         token.role = existingUser.role;
       }
