@@ -3,7 +3,7 @@ import { getPasswordResetTokenByEmail } from "@/data/password-reset-token";
 import { get2FATokenByEmail } from "@/data/two-factor-token";
 import { getVerificationTokenByEmail } from "@/data/verification-token";
 import { db } from "@/db";
-import { passwordResetTokens, twoFactorToken, verificationTokens } from "@/db/schema";
+import { passwordResetTokens, twoFactorToken, verificationTokens } from "@/db/schemas/auth-schema";
 import crypto from "crypto";
 import { eq } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
