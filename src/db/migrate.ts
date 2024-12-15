@@ -13,7 +13,6 @@ async function main() {
       migrationsFolder: "src/db/migrations",
     });
 
-    console.log("Migration successful");
   } catch (error) {
     console.error(error);
     throw error;

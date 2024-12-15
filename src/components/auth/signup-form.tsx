@@ -40,7 +40,6 @@ export default function SignupForm() {
 
   async function onSubmit(data: z.infer<typeof signupSchema>) {
     setFormStatus({}); // Clear previous status
-    console.log(data);
 
     startTransition(() => {
       signupAction(data)

@@ -25,7 +25,6 @@ export default function VerificationForm() {
 
     newVerification(token).then((data) => {
       if (data.error) {
-        console.log(token)
         setError(error)
       } else {
         setSuccess(data.success!)

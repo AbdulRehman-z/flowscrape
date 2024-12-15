@@ -53,7 +53,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider !== "credentials") return true;
       if (!user?.id) return false;
 
-      // console.log({ user, account })
 
       const existingUser = await getUserById(user.id);
       if (!existingUser?.emailVerified) {
@@ -74,8 +73,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true;
     },
     async session({ session, token }) {
-      // console.log(`session: ${JSON.stringify(session)}`);
-      // console.log(`sessionToken: ${JSON.stringify(token)}`);
 
       if (token.sub && session.user) {
         session.user.id = token.sub;
@@ -90,10 +87,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (!token.sub) return token;
 
-      console.log({ token, user })
 
       const existingUser = await getUserById(token.sub); // this is causing problem
-      console.log(`existingUser: ${JSON.stringify(existingUser)}`);
       if (existingUser) {
         token.role = existingUser.role;
       }

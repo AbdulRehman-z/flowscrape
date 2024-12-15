@@ -26,7 +26,6 @@ export const getVerificationTokenByToken = async function (
       .from(verificationTokens)
       .where(eq(verificationTokens.token, token));
 
-    console.log("token record:", tokenRecord)
 
     return tokenRecord.at(0) ?? null;
   } catch (error) {

@@ -82,7 +82,6 @@ export const loginAction = async (formData: z.infer<typeof loginSchema>) => {
           return { error: "Something went wrong!" };
       }
     }
-    console.log("Error logging in:", error);
 
     throw error;
   }

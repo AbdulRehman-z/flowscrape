@@ -10,7 +10,6 @@ export const middleware = auth((req) => {
   try {
     const isLoggedIn = !!req.auth
     const { nextUrl } = req
-    console.log("isLoggedIn", isLoggedIn)
 
     const isApiAuthRoute = req.url.startsWith(apiAuthPrefix)
     const isAuthRoute = authRoutes.includes(nextUrl.pathname)
