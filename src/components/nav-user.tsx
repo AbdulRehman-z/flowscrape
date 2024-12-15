@@ -29,6 +29,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { Button } from "./ui/button"
+import { useTransition } from "react"
+import { signOutAction } from "@/actions/signout-action"
 
 export function NavUser({
   user,
@@ -40,6 +43,17 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const [isPending, startTransition] = useTransition()
+
+
+  async function handleSignOut() {
+    console.log("signout")
+    startTransition(() => {
+      signOutAction().then(() => { }).catch((error) => {
+        console.log(error)
+      })
+    })
+  }
 
   return (
     <SidebarMenu>
@@ -102,13 +116,15 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <Button onClick={handleSignOut} asChild className="w-full" disabled={isPending}>
+              <DropdownMenuItem>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </Button>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
-    </SidebarMenu>
+    </SidebarMenu >
   )
 }
