@@ -1,9 +1,11 @@
+"use server";
+
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { workflow } from "@/db/schemas/workflow-schema";
 import { eq } from "drizzle-orm";
 
-export const getUserWorkflowsAction = async () => {
+export const getWorkflowsAction = async () => {
   try {
     const session = await auth();
     if (!session?.user?.id) {

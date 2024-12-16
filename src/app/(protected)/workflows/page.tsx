@@ -1,17 +1,22 @@
-import { getUserWorkflowsAction } from "@/actions/workflow/get-workflow-action";
+import { getWorkflowsAction } from "@/actions/workflow/get-workflow-action";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import CreateWorkflowDialog from "@/components/workflow/create-workflow-dialog";
+import WorkflowCard from "@/components/workflow/workflow-card";
 import { AlertCircle, InboxIcon } from "lucide-react";
 import { Suspense } from "react";
 
 export default function Page() {
   return (
     <div className="flex flex-1 h-full flex-col">
-      <div className="flex flex-col justify-start space-y-2 ">
-        <h1 className="text-3xl font-bold">Workflows</h1>
-        <p className=" text-muted-foreground">
-          Manage your workflows here.
-        </p>
+      <div className="flex  justify-between">
+        <div className="flex flex-col justify-start space-y- ">
+          <h1 className="text-3xl font-bold">Workflows</h1>
+          <p className=" text-muted-foreground">
+            Manage your workflows here.
+          </p>
+        </div>
+        <CreateWorkflowDialog triggerText="Crete Workflow" />
       </div>
 
       <div className="h-full p-6">
@@ -39,7 +44,8 @@ function UserWorkflowsSkeleton() {
 
 
 async function UserWorkflows() {
-  const workflows = await getUserWorkflowsAction()
+  const workflows = await getWorkflowsAction()
+  // const [] = use
   if (!workflows) {
     return (
       <Alert variant="destructive">
@@ -54,18 +60,22 @@ async function UserWorkflows() {
 
   if (workflows.length === 0) {
     return (
-      <div className="flex flex-col items-center mt-20 justify-center space-y-2">
-        <div className="bg-accent rounded-full size-20 p-4 flex items-center justify-center">
-          <InboxIcon size={40} />
+      <div className="flex flex-col items-center mt-40 justify-center gap-y-5">
+        <div className="flex flex-col items-center gap-y-3">
+          <div className="bg-accent rounded-full size-20 p-4 flex items-center justify-center">
+            <InboxIcon size={40} />
+          </div>
+          <div className="flex flex-col gap-y-1 text-center">
+            <p className="font-bold">
+              You have no workflows
+            </p>
+            <p className="text-muted-foreground text-sm">
+              Click on the button below to create one
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col gap-1 text-center">
-          <p className="font-bold">
-            You have no workflows
-          </p>
-          <p className="text-muted-foreground text-sm">
-            Click on the button below to create one
-          </p>
-        </div>
+
+        <CreateWorkflowDialog triggerText="Create your first workflow" />
       </div >
     )
   }
@@ -74,23 +84,9 @@ async function UserWorkflows() {
     <div className="space-y-2">
       {
         workflows.map((workflow, index) => (
-          <WorkflowItem key={index} workflow={workflow} />
+          <WorkflowCard key={index} workflow={workflow} />
         ))
       }
     </div>
   )
-}
-
-function WorkflowItem({ workflow }: { workflow: any }) {
-  return (
-    <div className="flex flex-col space-y-2">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">{workflow.name}</h2>
-      </div>
-      <div className="text-muted-foreground">
-        {workflow.description}
-      </div>
-    </div>
-  );
-
 }
