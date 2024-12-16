@@ -116,12 +116,12 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <Button onClick={handleSignOut} asChild className="w-full" disabled={isPending}>
-              <DropdownMenuItem>
-                <LogOut />
-                Log out
-              </DropdownMenuItem>
+            {/* <DropdownMenuItem> */}
+            <Button onClick={handleSignOut} className="w-full" disabled={isPending}>
+              <LogOut />
+              Log out
             </Button>
+            {/* </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
