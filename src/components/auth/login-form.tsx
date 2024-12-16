@@ -61,7 +61,7 @@ export default function LoginForm() {
       : data;
 
     startTransition(() => {
-      loginAction(submitData)
+      return loginAction(submitData)
         .then((response) => {
           if (response.error) {
             setFormStatus({ error: response.error });
