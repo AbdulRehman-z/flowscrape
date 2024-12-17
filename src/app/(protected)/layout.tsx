@@ -31,8 +31,7 @@ export default function DashboardLayout({
               <ModeToggle />
             </header>
             <Separator />
-            <main className="flex pt-12 pb-4 px-16 overflow-hidden">{children}</main>
-          </SidebarInset>
+            <main className="flex flex-1">{children}</main>          </SidebarInset>
         </SidebarProvider>
       </ThemeProvider>
     </QueryClientProvider>
