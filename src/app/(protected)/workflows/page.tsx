@@ -8,8 +8,8 @@ import { Suspense } from "react";
 
 export default function Page() {
   return (
-    <div className="flex flex-1 h-full flex-col">
-      <div className="flex  justify-between">
+    <section className="flex flex-1 h-full flex-col section-padding">
+      < div className="flex  justify-between" >
         <div className="flex flex-col justify-start space-y- ">
           <h1 className="text-3xl font-bold">Workflows</h1>
           <p className=" text-muted-foreground">
@@ -17,15 +17,14 @@ export default function Page() {
           </p>
         </div>
         <CreateWorkflowDialog triggerText="Crete Workflow" />
-      </div>
+      </div >
 
       <div className="h-full p-6">
         <Suspense fallback={<UserWorkflowsSkeleton />}>
           <UserWorkflows />
         </Suspense>
       </div>
-
-    </div>
+    </section >
   )
 }
 
