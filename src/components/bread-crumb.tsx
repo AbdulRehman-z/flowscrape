@@ -6,26 +6,33 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 
 export default function SideBarBreadCrumb() {
   const pathname = usePathname()
-  const paths = pathname === "/" ? [""] : pathname.split("/")
+  const paths = pathname === "/" ? [""] : pathname.split("/").filter(Boolean)
+
+  // const formatSegment = (segment: string) => {
+  //   return segment.replace(/-/g, ' ')
+  // }
 
   return (
     <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem className="hidden md:block">
-          {paths.map((path, index) => (
-            <BreadcrumbLink
-              key={index}
-              href={path === "" ? "/" : `/${path}`}
-              className={cn(path === paths[paths.length - 1] ? "text-gray-400" : "text-gray-500", "capitalize")}
-            >
-              {path}
-            </BreadcrumbLink>
-          ))}
-        </BreadcrumbItem>
-        <BreadcrumbSeparator className="hidden md:block" />
-        {/* <BreadcrumbItem>
-          <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-        </BreadcrumbItem> */}
+      <BreadcrumbList className="flex items-center">
+        {paths.map((path, index) => (
+          <div key={index} className="flex items-center">
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/${paths.slice(0, index + 1).join("/")}`}
+                className={cn(
+                  "capitalize text-sm transition-colors",
+                  index === paths.length - 1
+                    ? "text-foreground font-medium pointer-events-none"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {path}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator className="mx-2 text-muted-foreground" />
+          </div>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   )
