@@ -47,7 +47,7 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
           {/* Right side */}
           <div className="flex space-x-2 flex-row items-center">
             <Button asChild variant={"outline"}>
-              <Link href={`/workflows/edit/${workflow.id}`} className="">
+              <Link href={`/workflows/editor/${workflow.id}`} className="">
                 <EditIcon size={16} />
                 Edit
               </Link>
