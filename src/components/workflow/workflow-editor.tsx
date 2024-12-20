@@ -3,20 +3,32 @@
 import { WorkflowType } from "@/types/workflow-types";
 import { ReactFlowProvider } from "@xyflow/react";
 import FlowEditor from "./workflow-flow-editor";
+import Topbar from "./topbar/topbar";
+import TaskMenu from "./task-menu";
 
 type EditorProps = {
   workflow: WorkflowType
 }
 
-
 export default function Editor({ workflow }: EditorProps) {
-  console.log(" executed")
   return (
     <ReactFlowProvider>
-      <div className="w-full h-full flex flex-col overflow-hidden">
-        <section className="flex-1 overflow-hidden">
+      <div className="grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
+        <div className="row-span-2">
+          <TaskMenu />
+        </div>
+
+        <div className="col-start-2">
+          <Topbar
+            workflowId={workflow.id}
+            title="Workflow Editor"
+            subtitle={workflow.name}
+          />
+        </div>
+
+        <div className="col-start-2 overflow-hidden">
           <FlowEditor workflow={workflow} />
-        </section>
+        </div>
       </div>
     </ReactFlowProvider>
   )

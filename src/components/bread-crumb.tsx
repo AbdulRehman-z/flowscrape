@@ -8,10 +8,6 @@ export default function SideBarBreadCrumb() {
   const pathname = usePathname()
   const paths = pathname === "/" ? [""] : pathname.split("/").filter(Boolean)
 
-  // const formatSegment = (segment: string) => {
-  //   return segment.replace(/-/g, ' ')
-  // }
-
   return (
     <Breadcrumb>
       <BreadcrumbList className="flex items-center">

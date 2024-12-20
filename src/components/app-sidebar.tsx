@@ -14,6 +14,7 @@ import { navItems } from "@/lib/constants"
 import { Logo } from "./logo"
 import { Separator } from "./ui/separator"
 import { NavUser } from "./nav-user"
+import { usePathname } from "next/navigation"
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: {
@@ -24,8 +25,10 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 }
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
+
+
   return (
-    <Sidebar collapsible="icon" {...props} >
+    <Sidebar collapsible="icon" {...props} open >
       <SidebarHeader>
         <Logo />
         <Separator />

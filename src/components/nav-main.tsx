@@ -28,33 +28,33 @@ type NavMainProps = {
 }
 
 export function NavMain({ routes }: NavMainProps) {
-const pathName = usePathname()
-const [openStates, setOpenStates] = useState<Record<string, boolean>>({})
+  const pathName = usePathname()
+  const [openStates, setOpenStates] = useState<Record<string, boolean>>({})
 
-useEffect(() => {
+  useEffect(() => {
     // Initialize open states based on pathname
     const initialStates = routes.reduce((acc, route) => {
-    acc[route.title] = route.subRoutes?.some(sub => pathName.startsWith(sub.url)) || false
-    return acc
+      acc[route.title] = route.subRoutes?.some(sub => pathName.startsWith(sub.url)) || false
+      return acc
     }, {} as Record<string, boolean>)
     setOpenStates(initialStates)
-}, [pathName, routes])
+  }, [pathName, routes])
 
-const activeRoute = routes.find((route) => {
+  const activeRoute = routes.find((route) => {
     const hasActiveSubRoute = route.subRoutes?.some(sub => pathName.startsWith(sub.url))
     return (route.url.length > 0 && pathName.startsWith(route.url)) || hasActiveSubRoute
   }) || routes[0]
 
   return (
     <SidebarGroup className="mt-6">
-      <SidebarMenu className="space-y-2">
+      <SidebarMenu className="space-y-1">
         {routes.map((route) => (
-        <Collapsible
-        key={route.title}
-        open={openStates[route.title]}
-        onOpenChange={(open) => setOpenStates(prev => ({ ...prev, [route.title]: open }))}
-        className="group/collapsible"
-        >
+          <Collapsible
+            key={route.title}
+            open={openStates[route.title]}
+            onOpenChange={(open) => setOpenStates(prev => ({ ...prev, [route.title]: open }))}
+            className="group/collapsible"
+          >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton

@@ -21,7 +21,6 @@ export default function NodeCard({ children, isSelected, nodeId }: NodeCardProps
     const y = position.y + height! / 2
     if (x === undefined || y === undefined) return
 
-    console.log({ x, y })
     setCenter(x, y, {
       zoom: 1,
       duration: 500
@@ -29,7 +28,7 @@ export default function NodeCard({ children, isSelected, nodeId }: NodeCardProps
   }
 
   return (
-    <div onDoubleClick={handleDoubleClick} className={cn("rounded-md cursor-pointer bg-background border-2 border-separate w-[420px] text-sm flex flex-col gap-1", isSelected && "border-primary")}>
+    <div onDoubleClick={handleDoubleClick} className={cn("rounded-md cursor-pointer  bg-background border-2 border-separate w-[420px] text-sm flex flex-col gap-1", isSelected && "border-primary")}>
       {children}
     </div>
   )

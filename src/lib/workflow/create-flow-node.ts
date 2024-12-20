@@ -1,7 +1,7 @@
-import { AppNode } from "@/types/app-node-types";
-import { TaskType } from "@/types/task-type";
+import { AppNodeType } from "@/types/app-node-types";
+import { TaskTypeEnum } from "@/types/task-type";
 
-export const createFlowNode = (nodeType: TaskType, position?: { x: number, y: number }): AppNode => {
+export const createFlowNode = (nodeType: TaskTypeEnum, position?: { x: number, y: number }): AppNodeType => {
   return {
     id: crypto.randomUUID(),
     type: "FlowScrapeNode",

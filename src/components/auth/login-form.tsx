@@ -84,8 +84,6 @@ export default function LoginForm() {
     });
   }
 
-  console.log(form.watch())
-
   return (
     <CardWrapper
       titleHeader="Sign in to Acme Inc"
@@ -244,7 +242,6 @@ export default function LoginForm() {
 //   async function onSubmit(data: z.infer<typeof loginSchema>) {
 //     setFormStatus({});
 
-//     console.log("The form data:", { data })
 
 //     startTransition(() => {
 //       loginAction(data)

@@ -2,18 +2,17 @@
 
 import { Layers2Icon, Loader2 } from "lucide-react";
 import { useCallback, useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTrigger } from "../ui/dialog";
 
-import CustomDialogHeader from "../custom-dialog-header";
-import { Separator } from "../ui/separator";
-import { useForm } from "react-hook-form";
+import { useCreateWorkflow } from "@/hooks/workflow/use-create-workflow";
 import { createWorkflowSchema, CreateWorkflowSchemaType } from "@/schemas/workflow-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormField, FormControl, FormItem, FormLabel, FormDescription, FormMessage } from "../ui/form";
-import { useCreateWorkflow } from "@/hooks/workflow/use-create-workflow";
+import { useForm } from "react-hook-form";
+import CustomDialogHeader from "../custom-dialog-header";
 import { Button } from "../ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-import { AlertDialogAction } from "../ui/alert-dialog";
+import { Separator } from "../ui/separator";
 
 type CreateWorkflowDialogProps = {
   triggerText?: string
@@ -47,8 +46,10 @@ export default function CreateWorkflowDialog({ triggerText }: CreateWorkflowDial
           title="Create workflow"
           subtitle="Start building your new workflow"
         />
+        <DialogDescription className="text-sm text-muted-foreground">
+        Create a new workflow to automate your tasks. Fill in the details below to get started.
+        </DialogDescription>
         <Separator />
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-6">
             <FormField

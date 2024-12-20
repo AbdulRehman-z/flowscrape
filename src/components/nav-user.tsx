@@ -47,10 +47,9 @@ export function NavUser({
 
 
   async function handleSignOut() {
-    console.log("signout")
     startTransition(() => {
       signOutAction().then(() => { }).catch((error) => {
-        console.log(error)
+        console.error(error)
       })
     })
   }

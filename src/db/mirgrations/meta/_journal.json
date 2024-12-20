@@ -15,6 +15,20 @@
       "when": 1734270178113,
       "tag": "0001_great_the_initiative",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1734502681984,
+      "tag": "0002_loud_hedge_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1734502793804,
+      "tag": "0003_lean_blue_blade",
+      "breakpoints": true
     }
   ]
 }

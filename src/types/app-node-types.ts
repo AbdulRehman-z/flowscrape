@@ -1,12 +1,19 @@
 import type { Node } from "@xyflow/react"
-import { TaskType } from "./task-type"
+import { TaskParamType, TaskTypeEnum } from "./task-type"
 
-export type AppNodeData = {
-  type: TaskType
+export type AppNodeDataType = {
+  type: TaskTypeEnum
   inputs: Record<string, string>
-  [key: string]: any
+  [key: string]: unknown
 }
 
-export interface AppNode extends Node {
-  data: AppNodeData
+export interface AppNodeType extends Node {
+  data: AppNodeDataType
+}
+
+export type ParamProps = {
+  param: TaskParamType,
+  inputValue: string,
+  updateNodeParamValue: (newValue: string) => void
+  disabled?: boolean
 }

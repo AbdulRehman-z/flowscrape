@@ -1,4 +1,6 @@
-import { workflow } from "@/db";
+import { LucideProps } from "lucide-react";
+import { TaskParamEnum, TaskParamType, TaskTypeEnum } from "./task-type";
+import { AppNodeType } from "./app-node-types";
 
 export enum WorkflowStatus {
   DRAFT = "DRAFT",
@@ -15,3 +17,23 @@ export type WorkflowType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+
+
+export type WorkflowTaskType = {
+  type: TaskTypeEnum
+  label: string;
+  icon: React.FC<LucideProps>;
+  isEntryPoint: boolean
+  inputs: Array<TaskParamType>;
+  outputs: Array<TaskParamType>;
+  credits: number;
+}
+
+
+export type WorkflowExecutionPlanPhase = {
+  phase: number;
+  nodes: AppNodeType[]
+}
+
+export type WorkflowExecutionPlanType = WorkflowExecutionPlanPhase[]
