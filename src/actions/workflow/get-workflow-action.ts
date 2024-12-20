@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "@/db";
-import { workflow } from "@/db/schemas/workflow-schema";
+import { workflows } from "@/db/schemas/workflow-schema";
 import { eq } from "drizzle-orm";
 
 export const getWorkflowsAction = async () => {
@@ -11,10 +11,11 @@ export const getWorkflowsAction = async () => {
     if (!session?.user?.id) {
       throw new Error("User not authenticated");
     }
-    const workflows = await db.select().from(workflow).where(eq(workflow.userId, session.user.id));
-    return workflows
+
+    const results = await db.select().from(workflows).where(eq(workflows.userId, session.user.id));
+    return results
   } catch (error) {
-    console.log(error);
-    throw new Error("Something went wrong!", { cause: error });
+    console.error(error);
+    throw new Error("Something went wrong!");
   }
 };

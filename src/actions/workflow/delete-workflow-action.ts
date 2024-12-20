@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { db } from "@/db";
-import { workflow } from "@/db/schemas/workflow-schema";
+import { workflows } from "@/db/schemas/workflow-schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -21,8 +21,8 @@ export async function deleteWorkflowAction(workflowId: string) {
 
     // Execute deletion query
     const [deletedWorkflow] = await db
-      .delete(workflow)
-      .where(eq(workflow.id, workflowId))
+      .delete(workflows)
+      .where(eq(workflows.id, workflowId))
       .returning();
 
     if (!deletedWorkflow) {
