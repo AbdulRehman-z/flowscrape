@@ -20,6 +20,8 @@ type NodeOutputProps = {
 }
 
 export function NodeOutput({ output, nodeId }: NodeOutputProps) {
+
+
   return (
     <div className="flex justify-end relative p-3 bg-secondary w-full">
       <p className="text-sm font-medium text-muted-foreground">
@@ -30,7 +32,7 @@ export function NodeOutput({ output, nodeId }: NodeOutputProps) {
         id={output.name}
         position={Position.Right}
         type="source"
-        className={cn("!bg-muted-foreground !border-2 !border-background !-right-2 !size-4", CommonColors[output.type])}
+        className={cn("!bg-muted-foreground !border-2 !border-background !-right-3 !size-4 !", CommonColors[output.type])}
       />
     </div>
   )
