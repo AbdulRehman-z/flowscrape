@@ -1,4 +1,4 @@
-import { TaskParamEnum, TaskTypeEnum } from "@/types/task-type";
+import { TaskParamEnum } from "@/types/task-type";
 
 export const CommonColors: Record<TaskParamEnum, string> = {
   STRING: "!bg-pink-500",
