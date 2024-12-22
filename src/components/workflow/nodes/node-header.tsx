@@ -24,7 +24,6 @@ export default function NodeHeader({ taskType, nodeId }: NodeHeaderProps) {
 
   function handleNodeCopy() {
     const node = getNode(nodeId) as AppNodeType
-    console.log({ node })
     const position = {
       x: node.position.x + (node.measured?.width ?? 0) + 10,
       y: node.position.y + (node.measured?.height ?? 0) + 10
