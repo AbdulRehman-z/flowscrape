@@ -38,8 +38,8 @@ export default function Topbar({ workflowId, title, subtitle }: TopbarProps) {
           </div>
         </div>
         <div className="flex gap-x-3 items-center">
-          <SaveButton workflowId={workflowId} />
           <ExecuteButton workflowId={workflowId} />
+          <SaveButton workflowId={workflowId} />
         </div>
       </div>
     </header >
