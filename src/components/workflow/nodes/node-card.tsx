@@ -1,3 +1,4 @@
+import { useFlowValidationContext } from "@/contexts/useFlowValidationContext"
 import { cn } from "@/lib/utils"
 import { useReactFlow } from "@xyflow/react"
 import { ReactNode } from "react"
@@ -10,6 +11,7 @@ type NodeCardProps = {
 
 export default function NodeCard({ children, isSelected, nodeId }: NodeCardProps) {
   const { getNode, setCenter } = useReactFlow()
+  const { invalidInputs } = useFlowValidationContext()
 
   function handleDoubleClick() {
     const node = getNode(nodeId)
@@ -27,8 +29,10 @@ export default function NodeCard({ children, isSelected, nodeId }: NodeCardProps
     })
   }
 
+  const infectedNode = invalidInputs.some((invalidInput) => invalidInput.nodeId === nodeId)
+
   return (
-    <div onDoubleClick={handleDoubleClick} className={cn("rounded-md cursor-pointer  bg-background border-2 border-separate w-[420px] text-sm flex flex-col gap-1", isSelected && "border-primary")}>
+    <div onDoubleClick={handleDoubleClick} className={cn("rounded-md cursor-pointer  bg-background border-2 border-separate w-[420px] text-sm flex flex-col gap-1", isSelected && "border-primary", infectedNode && "border-red-500")}>
       {children}
     </div>
   )
