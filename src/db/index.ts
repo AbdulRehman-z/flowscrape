@@ -1,12 +1,12 @@
-import { env } from '@/schemas/env-schema';
-import { neon, neonConfig, Pool } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
-import ws from 'ws';
-
+import { neon, neonConfig } from '@neondatabase/serverless';
+import { drizzle as drizzleHttp } from 'drizzle-orm/neon-http';
 // Import all schemas
 import * as auth from './schemas/auth-schema';
 import * as workflow from './schemas/workflow-schema';
 // Import any other schema files you have
+import ws from 'ws';
+
+let connectionString = process.env.DATABASE_URL;
 
 // Combine all schemas into a single object
 const schema = {
@@ -15,10 +15,9 @@ const schema = {
   // ...spread other schemas here
 };
 
-let connectionString = env.AUTH_DRIZZLE_URL;
 
 // Configuring Neon for local development
-if (env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   connectionString = 'postgres://postgres:postgres@db.localtest.me:5432/main';
   neonConfig.fetchEndpoint = (host) => {
     const [protocol, port] = host === 'db.localtest.me' ? ['http', 4444] : ['https', 443];
@@ -26,13 +25,22 @@ if (env.NODE_ENV === 'development') {
   };
   const connectionStringUrl = new URL(connectionString);
   neonConfig.useSecureWebSocket = connectionStringUrl.hostname !== 'db.localtest.me';
-  neonConfig.wsProxy = (host: string, port: string | number): string => (host === 'db.localtest.me' ? `${host}:4444/v1` : `${host}:${port}/v1`);
-  neonConfig.webSocketConstructor = ws;
+  neonConfig.wsProxy = (host) => (host === 'db.localtest.me' ? `${host}:4444/v2` : `${host}/v2`);
 }
+neonConfig.webSocketConstructor = ws;
 
-export const pool = new Pool({ connectionString });
-export const sql = neon(connectionString);
-export const db = drizzle(sql, { schema });
+const sql = neon(connectionString as string);
+// const pool = new Pool({ connectionString });
+
+// Drizzle supports both HTTP and WebSocket clients. Choose the one that fits your needs:
+
+// HTTP Client:
+// - Best for serverless functions and Lambda environments
+// - Ideal for stateless operations and quick queries
+// - Lower overhead for single queries
+// - Better for applications with sporadic database access
+export const db = drizzleHttp({ client: sql });
+
 
 // Export all schemas
 export { schema };
