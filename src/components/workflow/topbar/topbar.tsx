@@ -11,9 +11,10 @@ type TopbarProps = {
   workflowId: string
   title: string
   subtitle?: string
+  hideButtons?: boolean
 }
 
-export default function Topbar({ workflowId, title, subtitle }: TopbarProps) {
+export default function Topbar({ workflowId, title, subtitle, hideButtons = false }: TopbarProps) {
   const router = useRouter()
 
   function handleBack() {
@@ -38,8 +39,13 @@ export default function Topbar({ workflowId, title, subtitle }: TopbarProps) {
           </div>
         </div>
         <div className="flex gap-x-3 items-center">
-          <ExecuteButton workflowId={workflowId} />
-          <SaveButton workflowId={workflowId} />
+          {
+            !hideButtons &&
+            <div className="flex gap-x-3">
+              <ExecuteButton workflowId={workflowId} />
+              <SaveButton workflowId={workflowId} />
+            </div>
+          }
         </div>
       </div>
     </header >
