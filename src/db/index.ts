@@ -1,5 +1,5 @@
 import { neon, neonConfig } from '@neondatabase/serverless';
-import { drizzle as drizzleHttp } from 'drizzle-orm/neon-http';
+import { drizzle } from 'drizzle-orm/neon-http';
 // Import all schemas
 import * as auth from './schemas/auth-schema';
 import * as workflow from './schemas/workflow-schema';
@@ -29,8 +29,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 neonConfig.webSocketConstructor = ws;
 
-const sql = neon(connectionString as string);
-// const pool = new Pool({ connectionString });
+const client = neon(connectionString as string);
 
 // Drizzle supports both HTTP and WebSocket clients. Choose the one that fits your needs:
 
@@ -39,7 +38,7 @@ const sql = neon(connectionString as string);
 // - Ideal for stateless operations and quick queries
 // - Lower overhead for single queries
 // - Better for applications with sporadic database access
-export const db = drizzleHttp({ client: sql });
+export const db = drizzle(client, { schema });
 
 
 // Export all schemas
@@ -57,4 +56,6 @@ export const {
   workflows,
   users_twoFactorConfirmationRelation,
   verificationTokens,
+  workflowExecutionPhases,
+  workflowExecutions
 } = schema;
