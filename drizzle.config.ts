@@ -3,7 +3,7 @@ import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
   out: "./src/db/mirgrations",
-  schema: "./src/db/schemas",
+  schema: "./src/db/schemas/*",
   dialect: "postgresql",
   dbCredentials: {
     url: env.AUTH_DRIZZLE_URL,
