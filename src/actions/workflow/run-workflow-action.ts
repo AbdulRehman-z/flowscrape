@@ -50,6 +50,7 @@ export const runWorkflowAction = async (form: { workflowId: string, defination?:
           userId,
           status: WorkflowExecutionStatusEnum.PENDING,
           startedAt: new Date(),
+          defination: JSON.stringify(parsedDefination),
           trigger: WorkflowTriggerEnum.MANUAL,
         })
         .returning();
