@@ -31,6 +31,7 @@ export const workflowExecutions = pgTable('workflow_execution', {
   trigger: text('trigger').notNull(),
   status: varchar('status', { length: 50 }).notNull().default('draft'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
+  defination: text("defination"),
   startedAt: timestamp('started_at').notNull().defaultNow(),
   completedAt: timestamp('completed_at'),
   creditsConsumed: integer('credits_consumed'),
@@ -58,6 +59,15 @@ export const workflowExecutionPhases = pgTable('execution_phase', {
     .references(() => workflowExecutions.id, { onDelete: 'cascade' }),
 });
 
+
+export const workflowExecutionPhaseLogs = pgTable("executionLog", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  executionPhaseId: text("execution_phase_id").notNull().references(() => workflowExecutionPhases.id, { onDelete: "cascade" }),
+  message: text("message").notNull(),
+  logLevel: varchar("log_level", { length: 50 }).notNull(),
+  timestamp: timestamp("timestamp").notNull().defaultNow(),
+})
+
 // Relations
 export const workflowRelations = relations(workflows, ({ many }) => ({
   executions: many(workflowExecutions),
@@ -71,9 +81,10 @@ export const workflowExecutionRelations = relations(workflowExecutions, ({ one, 
   phases: many(workflowExecutionPhases),
 }));
 
-export const workflowExecutionPhasesRelations = relations(workflowExecutionPhases, ({ one }) => ({
+export const workflowExecutionPhasesRelations = relations(workflowExecutionPhases, ({ one, many }) => ({
   execution: one(workflowExecutions, {
     fields: [workflowExecutionPhases.workflowExecutionId],
     references: [workflowExecutions.id],
   }),
+  logs: many(workflowExecutionPhaseLogs),
 }));
