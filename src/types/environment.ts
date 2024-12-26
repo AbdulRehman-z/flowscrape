@@ -1,5 +1,6 @@
 import { Browser, Page } from "puppeteer"
 import { WorkflowTaskType } from "./workflow-types"
+import { LogCollector } from "./log.types"
 
 export type Environment = {
   browser?: Browser,
@@ -21,10 +22,13 @@ export type Environment = {
  * - Provides type safety by only allowing valid input names for the task type
  */
 export type ExecutionEnvironment<T extends WorkflowTaskType> = {
-  getInput(name: T["inputs"][number]["name"]): string
-  getBrowser(): Browser | undefined
-  setBrowser(browser: Browser): void
+  getInput(name: T["inputs"][number]["name"]): string;
+  setOutput(name: T["outputs"][number]["name"], value: string): void;
+  getBrowser(): Browser | undefined;
+  setBrowser(browser: Browser): void;
 
-  getPage(): Page | undefined
-  setPage(page: Page): void
+  getPage(): Page | undefined;
+  setPage(page: Page): void;
+
+  log: LogCollector,
 }
