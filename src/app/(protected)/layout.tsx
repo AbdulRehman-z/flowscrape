@@ -1,7 +1,7 @@
 import { AppSidebarWrapper } from "@/components/app-sidebar-wrapper";
 import QueryClientProvider from "@/components/query-client-provider"
 import { ThemeProvider } from "@/components/theme-provider"
-import { DashboardLayoutContent } from "@/components/workflow/sidebar-layout-content";
+import { DashboardLayoutContent } from "@/components/workflow/dashboard-layout-content";
 
 export default function DashboardLayout({
   children,

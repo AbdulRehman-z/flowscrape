@@ -25,7 +25,6 @@ const getValidInputs = (node: AppNodeType, edges: Edge[], planned: Set<string>) 
     const inputValue = node.data.inputs[input.name]
     const inputValueProvided = inputValue?.length > 0
     if (inputValueProvided) {
-      console.log("input value provided", { inputValue, id: node.id })
       // this input is fine,so we can move on
       continue
     }
@@ -36,9 +35,6 @@ const getValidInputs = (node: AppNodeType, edges: Edge[], planned: Set<string>) 
     const inputLinkedToOutput = incomingEdges.find((edge) => edge.targetHandle === input.name)
     const requiredInputProvidedByVisitedOutput = inputLinkedToOutput && input.required && planned.has(inputLinkedToOutput.source)
 
-    console.log("output value provided", {
-      planned: planned.has(inputLinkedToOutput!.source),
-    })
 
     if (requiredInputProvidedByVisitedOutput) {
       //the input is required and we have a valid value provided by a task that is already planned
@@ -125,7 +121,6 @@ export const FlowToExecutionPlan = (nodes: AppNodeType[], edges: Edge[]): FlowTo
 
     for (const node of nextPhase.nodes) {
       planned.add(node.id)
-      console.log({ plannednodeID: node.id })
     }
 
     if (nextPhase.nodes.length > 0) {

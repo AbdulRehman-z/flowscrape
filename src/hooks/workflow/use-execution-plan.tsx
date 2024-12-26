@@ -1,4 +1,4 @@
-import { executeWorkflowAction } from "@/actions/workflow/execute-workflow-action"
+import { runWorkflowAction } from "@/actions/workflow/run-workflow-action"
 import { useFlowValidationContext } from "@/contexts/useFlowValidationContext"
 import { FlowToExecutionPlan, FlowToExecutionPlanType, FlowToExecutionPLanValidationError } from "@/lib/workflow/execution-plan"
 import { AppNodeType } from "@/types/app-node-types"
@@ -45,7 +45,7 @@ export const useExecutionPlan = () => {
 
 export const useExecutionPlanMutation = () => {
   const { mutate: executeWorkflow, isPending: isExecuting } = useMutation({
-    mutationFn: executeWorkflowAction,
+    mutationFn: runWorkflowAction,
     onSuccess: () => {
       toast.success("Workflow executed successfully")
     },

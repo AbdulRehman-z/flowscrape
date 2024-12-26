@@ -3,13 +3,14 @@
 import { auth } from "@/auth"
 import { getWorkflowById } from "@/data/workflow/get-workflow"
 import { db, workflowExecutionPhases, workflowExecutions } from "@/db"
+import { ExecuteWorkflow } from "@/lib/workflow/execute-workflow"
 import { FlowToExecutionPlan } from "@/lib/workflow/execution-plan"
 import { TaskREgistery } from "@/lib/workflow/task/task-registery"
 import { WorkflowExecutionPhaseStatusEnum, WorkflowExecutionStatusEnum, WorkflowTriggerEnum } from "@/types/workflow-types"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 
-export const executeWorkflowAction = async (form: { workflowId: string, defination?: string }) => {
+export const runWorkflowAction = async (form: { workflowId: string, defination?: string }) => {
   const session = await auth()
   if (!session?.user.id) {
     throw new Error("Unauthorized")
@@ -97,7 +98,8 @@ export const executeWorkflowAction = async (form: { workflowId: string, definati
     throw new Error("Failed to create workflow execution")
   }
 
+  ExecuteWorkflow(executionResult.id) // TODO: move this to a background job
   redirect(
-    `/workflows/runs/${workflowId}/${executionResult.id}`
+    `/workflows/executor/${workflowId}/${executionResult.id}`
   )
 }

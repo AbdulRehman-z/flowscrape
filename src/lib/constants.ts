@@ -12,8 +12,8 @@ export const navItems = [
         icon: EditIcon
       },
       {
-        title: "Run",
-        url: "/workflows/runs",
+        title: "Executor",
+        url: "/workflows/executor",
         icon: Play
       },
     ],
@@ -21,4 +21,3 @@ export const navItems = [
   { title: "Credentials", icon: Key, url: "/credentials" },
   { title: "Billings", icon: CreditCard, url: "/billings" },
 ]
-// [ Server ] Error: duplicate key value violates unique constraint "workflow_execution_workflow_id_unique"

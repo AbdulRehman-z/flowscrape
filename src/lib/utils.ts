@@ -1,6 +1,7 @@
+import { type workflowExecutionPhases } from "@/db"
 import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
 import { intervalToDuration } from "date-fns"
+import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -34,4 +35,19 @@ export function DatesToDurationString(end: Date | null | undefined, start: Date 
 
   // Format duration as "Xm Ys" string with 0 as default
   return `${duration.minutes || 0}m ${duration.seconds || 0}s`
+}
+
+
+/**
+ * Type representing a phase object with only the creditsConsumed property
+ */
+type phase = Pick<typeof workflowExecutionPhases, "creditsConsumed">
+
+/**
+ * Calculates the total credits consumed across all phases of a workflow
+ * @param phases - Array of workflow phases containing creditsConsumed property
+ * @returns The sum of all credits consumed across phases
+ */
+export function getTotalCreditsConsumedByPhasesInWorkflow(phases: phase[]) {
+  return phases.reduce((acc, phase) => acc + Number(phase.creditsConsumed), 0)
 }
