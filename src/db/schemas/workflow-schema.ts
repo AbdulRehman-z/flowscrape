@@ -15,6 +15,9 @@ export const workflows = pgTable('workflow', {
   name: varchar('name', { length: 255 }).notNull().unique(),
   description: text('description'),
   defination: text('defination').notNull().unique(),
+  lastRunsAt: timestamp('last_runs_at'),
+  lastRunStatus: text('last_execution_status'),
+  lastRunId: text('last_execution_id'),
   status: varchar('status', { length: 50 }).notNull().default('draft'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
@@ -30,6 +33,7 @@ export const workflowExecutions = pgTable('workflow_execution', {
   createdAt: timestamp('created_at').notNull().defaultNow(),
   startedAt: timestamp('started_at').notNull().defaultNow(),
   completedAt: timestamp('completed_at'),
+  creditsConsumed: integer('credits_consumed'),
   workflowId: text('workflow_id')
     .notNull()
     .references(() => workflows.id, { onDelete: 'cascade' }),
@@ -45,9 +49,10 @@ export const workflowExecutionPhases = pgTable('execution_phase', {
   name: varchar('name', { length: 255 }).notNull(),
   startedAt: timestamp('started_at').notNull().defaultNow(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
+  completedAt: timestamp('completed_at'),
   inputs: text('inputs'),
   outputs: text('outputs'),
-  creditsCost: integer('credits_cost'),
+  creditsConsumed: integer('credits_consumed'),
   workflowExecutionId: text('workflow_execution_id')
     .notNull()
     .references(() => workflowExecutions.id, { onDelete: 'cascade' }),
