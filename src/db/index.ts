@@ -1,5 +1,5 @@
 import { neon, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
+import { drizzle as DrizzleHttp } from 'drizzle-orm/neon-http';
 // Import all schemas
 import * as auth from './schemas/auth-schema';
 import * as workflow from './schemas/workflow-schema';
@@ -38,7 +38,7 @@ const client = neon(connectionString as string);
 // - Ideal for stateless operations and quick queries
 // - Lower overhead for single queries
 // - Better for applications with sporadic database access
-export const db = drizzle(client, { schema });
+export const db = DrizzleHttp(client, { schema });
 
 
 // Export all schemas
@@ -57,5 +57,6 @@ export const {
   users_twoFactorConfirmationRelation,
   verificationTokens,
   workflowExecutionPhases,
-  workflowExecutions
+  workflowExecutions,
+  workflowExecutionPhaseLogs,
 } = schema;
