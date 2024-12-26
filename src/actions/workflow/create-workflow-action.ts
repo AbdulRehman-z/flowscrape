@@ -19,7 +19,6 @@ export const createWorkflowAction = async (
     throw new Error("Unauthorized");
   }
 
-
   const initialFlow: { nodes: AppNodeType[], edges: Edge[] } = {
     nodes: [],
     edges: []
@@ -49,6 +48,7 @@ export const createWorkflowAction = async (
       throw new Error("Workflow with this name already exists");
     }
 
+    console.log(error)
     throw new Error("Failed to create workflow");
   }
 
