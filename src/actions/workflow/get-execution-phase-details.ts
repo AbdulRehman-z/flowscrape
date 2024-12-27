@@ -16,18 +16,24 @@ export const getWorkflowExecutionPhaseDetailsAction = async (phaseId: string) =>
 
     const userId = session.user.id;
 
-    const result = await db.select().from(workflowExecutionPhases).where(and(eq(
-      workflowExecutionPhases.userId, userId
-    ), eq(
-      workflowExecutionPhases.id, phaseId
-    )))
+    // const result = await db.select().from(workflowExecutionPhases).where(and(eq(
+    //   workflowExecutionPhases.userId, userId
+    // ), eq(
+    //   workflowExecutionPhases.id, phaseId
+    // )))
+
+    const result = await db.query.workflowExecutionPhases.findMany({
+      with: {
+        logs: true,
+      },
+      where: and(eq(workflowExecutionPhases.userId, userId), eq(workflowExecutionPhases.id, phaseId))
+    });
 
     if (!result || result.length === 0) {
       throw new Error("Phase not found");
     }
 
     return result.at(0);
-
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(`Failed to get workflow execution phase: ${error.message}`);
