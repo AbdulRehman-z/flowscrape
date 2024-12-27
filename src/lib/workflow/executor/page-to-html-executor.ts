@@ -9,6 +9,7 @@ export async function PageToHtmlExecutor(environment: ExecutionEnvironment<typeo
       return false
     }
     environment.setOutput("HTML", html)
+
     return true
   } catch (error) {
     console.error(error)
