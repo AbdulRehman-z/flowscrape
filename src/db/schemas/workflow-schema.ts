@@ -5,23 +5,29 @@ import {
   pgTable,
   varchar,
   integer,
+  uniqueIndex,
   // uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
 // Workflow table
-export const workflows = pgTable('workflow', {
-  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
-  userId: text('user_id').notNull().unique(),
-  name: varchar('name', { length: 255 }).notNull().unique(),
-  description: text('description'),
-  defination: text('defination').notNull().unique(),
-  lastRunsAt: timestamp('last_runs_at'),
-  lastRunStatus: text('last_execution_status'),
-  lastRunId: text('last_execution_id'),
-  status: varchar('status', { length: 50 }).notNull().default('draft'),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-}
+export const workflows = pgTable(
+  'workflow',
+  {
+    id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text('user_id').notNull(),
+    name: varchar('name', { length: 255 }).notNull(),
+    description: text('description'),
+    defination: text('defination').notNull().unique(),
+    lastRunsAt: timestamp('last_runs_at'),
+    lastRunStatus: text('last_execution_status'),
+    lastRunId: text('last_execution_id'),
+    status: varchar('status', { length: 50 }).notNull().default('draft'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (table) => ({
+    nameUserIdx: uniqueIndex('name_user_idx').on(table.name, table.userId),
+  })
 );
 
 // Workflow executions table
@@ -87,4 +93,11 @@ export const workflowExecutionPhasesRelations = relations(workflowExecutionPhase
     references: [workflowExecutions.id],
   }),
   logs: many(workflowExecutionPhaseLogs),
+}));
+
+export const workflowExecutionPhaseLogsRelations = relations(workflowExecutionPhaseLogs, ({ one }) => ({
+  phase: one(workflowExecutionPhases, {
+    fields: [workflowExecutionPhaseLogs.executionPhaseId],
+    references: [workflowExecutionPhases.id],
+  }),
 }));
