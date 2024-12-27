@@ -10,16 +10,19 @@ import { WorkflowExecutionStatusEnum } from "@/types/workflow-types";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { CalendarIcon, CircleDashedIcon, ClockIcon, KeyIcon, Loader2Icon, LucideIcon } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 
 
 type ExecutionViewerProps = {
   initialData: Awaited<ReturnType<typeof getWorkflowExecutionWithPhasesAction>>;
   setPhaseDetails: React.Dispatch<React.SetStateAction<Awaited<ReturnType<typeof getWorkflowExecutionPhaseDetailsAction>> | null>>;
+  selectedPhase: string | null;
+  setSelectedPhase: React.Dispatch<React.SetStateAction<string | null>>;
+  setQueryState: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function ExecutionViewer({ initialData, setPhaseDetails }: ExecutionViewerProps) {
-  const [selectedPhase, setSelectedPhase] = useState<null | string>(null);
+export default function ExecutionViewer({ initialData, setPhaseDetails, selectedPhase, setSelectedPhase, setQueryState }: ExecutionViewerProps) {
+  // const [selectedPhase, setSelectedPhase] = useState<null | string>(null);
 
   const query = useQuery({
     queryKey: ["execution", initialData.id],
@@ -37,11 +40,13 @@ export default function ExecutionViewer({ initialData, setPhaseDetails }: Execut
   useEffect(() => {
     if (phaseDetails.data) {
       setPhaseDetails(phaseDetails.data);
+      setQueryState("");
     }
-  }, [phaseDetails.data, setPhaseDetails])
+  }, [phaseDetails.data, setPhaseDetails, setQueryState])
 
   function handlePhaseClick(phaseId: string) {
     setSelectedPhase(phaseId);
+    setQueryState("RUNNING");
   }
 
   const duration = DatesToDurationString(query.data?.completedAt, query.data?.startedAt);
@@ -86,7 +91,7 @@ export default function ExecutionViewer({ initialData, setPhaseDetails }: Execut
           <SidebarGroupContent>
             <div className="flex flex-col gap-y-1 overflow-y-auto">
               {query.data?.phases?.map((phase, index) => (
-                <Button disabled={phaseDetails.isLoading && selectedPhase === phase.id} key={index} onClick={() => handlePhaseClick(phase.id)} variant={selectedPhase === phase.id ? "secondary" : "ghost"} className="flex justify-between items-center w-full px-3">
+                <Button disabled={phaseDetails.isLoading && selectedPhase === phase.id || query.data.status === WorkflowExecutionStatusEnum.RUNNING || query.data.status === WorkflowExecutionStatusEnum.PENDING} key={index} onClick={() => handlePhaseClick(phase.id)} variant={selectedPhase === phase.id ? "secondary" : "ghost"} className="flex justify-between items-center w-full px-3">
                   <div className="flex w-full justify-center  items-center">
                     {phaseDetails.isLoading && selectedPhase === phase.id ? <Loader2Icon size={20} className="animate-spin" /> : <div className="flex items-center justify-between w-full gap-x-2">
                       <div className="flex items-center gap-x-2">
