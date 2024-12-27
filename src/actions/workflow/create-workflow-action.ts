@@ -8,6 +8,7 @@ import { CreateWorkflowSchemaType } from "@/schemas/workflow-schema";
 import { AppNodeType } from "@/types/app-node-types";
 import { TaskTypeEnum } from "@/types/task-type";
 import { WorkflowStatus } from "@/types/workflow-types";
+import { NeonDbError } from "@neondatabase/serverless";
 import { Edge } from "@xyflow/react";
 import { redirect } from "next/navigation";
 
@@ -48,9 +49,14 @@ export const createWorkflowAction = async (
       throw new Error("Workflow with this name already exists");
     }
 
-    console.log(error)
+    if (error instanceof NeonDbError) {
+      console.error({ error })
+      if (error.code === "23505") {
+        throw new Error("Workflow with this name already exists");
+      }
+    }
+
     throw new Error("Failed to create workflow");
   }
-
   redirect(`/workflows/editor/${result.id}`);
-};
+}
