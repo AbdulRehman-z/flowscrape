@@ -126,6 +126,8 @@ function setupEnvironmentForPhase(node: AppNodeType, environment: Environment, e
     const inputValue = node.data.inputs[input.name]
     if (inputValue) {
       environment.phases[node.id].inputs[input.name] = inputValue
+      console.log({ inputValue })
+      continue
     }
 
     const connectedEdge = edges.find(
@@ -138,6 +140,7 @@ function setupEnvironmentForPhase(node: AppNodeType, environment: Environment, e
     }
 
     const outputValue = environment.phases[connectedEdge.source].outputs[connectedEdge.sourceHandle!]
+
 
     environment.phases[node.id].inputs[input.name] = outputValue
   }
@@ -158,11 +161,6 @@ function createExecutionEnvironment(node: AppNodeType, environment: Environment,
 // 5. Finalization Functions
 async function finalizePhase(phaseId: string, success: boolean, outputs: Record<string, unknown>, logCollector: LogCollector) {
   const completedAt = new Date()
-  // await db.update(workflowExecutionPhases).set({
-  //   status: success ? WorkflowExecutionPhaseStatusEnum.COMPLETED : WorkflowExecutionPhaseStatusEnum.FAILED,
-  //   completedAt,
-  //   outputs: JSON.stringify(outputs),
-  // }).where(eq(workflowExecutionPhases.id, phaseId))
   await db.update(workflowExecutionPhases)
     .set({
       status: success ? WorkflowExecutionPhaseStatusEnum.COMPLETED : WorkflowExecutionPhaseStatusEnum.FAILED,
@@ -198,7 +196,6 @@ async function finalizeWorkflowExecution(executionId: string, workflowId: string
     lastRunStatus: executionRunStatus
   }).where(eq(workflows.id, workflowId))
 }
-
 
 async function cleanUpEnvironment(environment: Environment) {
   if (environment.browser) {
