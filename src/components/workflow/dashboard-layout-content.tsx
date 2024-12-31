@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import { Separator } from "@radix-ui/react-separator"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import { WorkflowsNavigations } from "./workflows-navigations"
 
 export function DashboardLayoutContent({
   children,
@@ -15,14 +16,17 @@ export function DashboardLayoutContent({
   sidebar: React.ReactNode
 }) {
   const pathname = usePathname()
-  // Check if current page is an executor page by looking for '/workflows/executor/' in the path
-  const isExecutorPage = pathname.includes('/workflows/executor/')
+  // Check if current page is an executions page by looking for '/workflows/executions/' in the path
+  const isExecutorPage = pathname.includes('/workflows/executions/')
+  const isEditorPage = pathname.includes('/workflows/editor/')
 
-  // Split the path after '/workflows/executor/' into segments, return empty array if not found
-  const executorSegments = pathname.split('/workflows/executor/')[1]?.split('/') || []
+  const showWorkflowsNavigations = isExecutorPage || isEditorPage
 
+  // Split the path after '/workflows/executions/' into segments, return empty array if not found
+  const executorSegments = pathname.split('/workflows/executions/')[1]?.split('/') || []
+  console.log({ executorSegments })
 
-  // Check if we're on a detailed executor page (has more than one segment after executor)
+  // Check if we're on a detailed executions page (has more than one segment after executions)
   const isDetailedExecutorPage = executorSegments.length > 1
 
   // State for controlling sidebar visibility
@@ -35,19 +39,20 @@ export function DashboardLayoutContent({
 
   // Effect to control sidebar state based on current page
   useEffect(() => {
-    // If not on executor page, keep sidebar open
+    // If not on executions page, keep sidebar open
     if (!isExecutorPage) {
       setIsSidebarOpen(true)
       return
     }
 
-    // On detailed executor pages close sidebar, otherwise keep it open
+    // On detailed executions pages close sidebar, otherwise keep it open
     if (isDetailedExecutorPage) {
       setIsSidebarOpen(false)
     } else {
       setIsSidebarOpen(true)
     }
   }, [isExecutorPage, isDetailedExecutorPage])
+
 
   return (
     <SidebarProvider open={isSidebarOpen} onOpenChange={handleOpenChange}>
@@ -59,6 +64,7 @@ export function DashboardLayoutContent({
             <Separator orientation="vertical" className="mr-2 h-4" />
             <SideBarBreadCrumb />
           </div>
+          {showWorkflowsNavigations && <WorkflowsNavigations isEditorPage={isEditorPage} />}
           <ModeToggle />
         </header>
         <Separator />

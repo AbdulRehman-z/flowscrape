@@ -8,12 +8,12 @@ export const navItems = [
     subRoutes: [
       {
         title: "Editor",
-        url: "/workflows/editor",
+        url: "/workflows/editor/",
         icon: EditIcon
       },
       {
         title: "Executor",
-        url: "/workflows/executor",
+        url: "/workflows/executions/",
         icon: Play
       },
     ],

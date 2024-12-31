@@ -30,7 +30,7 @@ export default function ExecutionsTable({ workflowId, initialData }: ExecutionsT
       <TableBody>
         {executions.map((execution) => (
           <TableRow onClick={() =>
-            router.push(`/workflows/executor/${workflowId}/${execution.id}`)
+            router.push(`/workflows/executions/${workflowId}/${execution.id}`)
           } key={execution.id} className="border-t cursor-pointer">
             <TableCell className="px-6 py-4">{execution.id}</TableCell>
             <TableCell className="px-6 py-4">{execution.trigger}</TableCell>
