@@ -101,6 +101,6 @@ export const runWorkflowAction = async (form: { workflowId: string, defination?:
 
   ExecuteWorkflow(executionResult.id) // TODO: move this to a background job
   redirect(
-    `/workflows/executor/${workflowId}/${executionResult.id}`
+    `/workflows/executions/${workflowId}/${executionResult.id}`
   )
 }

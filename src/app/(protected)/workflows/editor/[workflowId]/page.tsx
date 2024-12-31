@@ -10,7 +10,6 @@ type WorklfowEditProps = {
 
 export default async function WorkflowEdit({ params }: WorklfowEditProps) {
   const { workflowId } = await params;
-
   const workflow = await getWorkflowById(workflowId);
 
   if (!workflow) {
