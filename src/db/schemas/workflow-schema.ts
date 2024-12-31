@@ -74,6 +74,13 @@ export const workflowExecutionPhaseLogs = pgTable("executionLog", {
   timestamp: timestamp("timestamp").notNull().defaultNow(),
 })
 
+export const userBalance = pgTable('user_balance', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id').notNull(),
+  credits: integer('credits').notNull(),
+});
+
+
 // Relations
 export const workflowRelations = relations(workflows, ({ many }) => ({
   executions: many(workflowExecutions),

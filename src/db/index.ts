@@ -59,4 +59,5 @@ export const {
   workflowExecutionPhases,
   workflowExecutions,
   workflowExecutionPhaseLogs,
+  userBalance
 } = schema;
