@@ -2,11 +2,12 @@
 
 import { getWorkflowExecutionPhaseDetailsAction } from "@/actions/workflow/get-execution-phase-details";
 import { getWorkflowExecutionWithPhasesAction } from "@/actions/workflow/get-workflow-execution-with-phases-action";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
+import { cn, DatesToDurationString } from "@/lib/utils";
 import { LogLevel } from "@/types/log.types";
-import { Loader2Icon } from "lucide-react";
+import { CoinsIcon, Loader2Icon, Timer } from "lucide-react";
 import { useState } from "react";
 import Topbar from "../topbar/topbar";
 import ExecutionViewer from "./execution-viewer";
@@ -51,7 +52,7 @@ export default function ExecutionPageContent({ initialData, workflowId }: Execut
         {
           queryState === "RUNNING" && (
             <div className="h-full w-full flex items-center justify-center ">
-              <div className="flex items-center justify-center shadow-md">
+              <div className="flex items-center justify-center">
                 <div className="flex flex-col items-center space-y-4">
                   <div className="animate-spin">
                     <Loader2Icon size={25} />
@@ -65,7 +66,7 @@ export default function ExecutionPageContent({ initialData, workflowId }: Execut
         {
           !selectedPhase && queryState !== "RUNNING" && (
             <div className="flex w-full h-full flex-col items-center justify-center">
-              <div className="flex flex-col text-center space-y-2 rounded-lg shadow-md">
+              <div className="flex flex-col text-center">
                 <h1 className="text-3xl font-bold">Select Execution Phase</h1>
                 <p className="text-base font-medium text-muted-foreground">Select a phase from the sidebar to view detailed information</p>
               </div>
@@ -74,11 +75,21 @@ export default function ExecutionPageContent({ initialData, workflowId }: Execut
         }
 
         <div className="px-10 py-7 flex flex-col gap-y-4">
+          <div className="flex items-center gap-x-3">
+            <Badge className="flex items-center gap-x-2 rounded-full shadow-none  ring-2 ring-sidebar-border  bg-sidebar text-muted-foreground hover:bg-sidebar/80">
+              <CoinsIcon size={20} />
+              <span>{phaseDetails?.creditsConsumed}</span>
+            </Badge>
+            <Badge className="flex items-center gap-x-2 rounded-full shadow-none  ring-2 ring-sidebar-border  bg-sidebar text-muted-foreground hover:bg-sidebar/80">
+              <Timer size={20} />
+              <span>{DatesToDurationString(phaseDetails?.completedAt, phaseDetails?.createdAt)}</span>
+            </Badge>
+          </div>
+
           <ParameterViewer title="Inputs" subtitle="Inputs used for this phase" paramJson={phaseDetails?.inputs || undefined} />
           <ParameterViewer title="Outputs" subtitle="Outputs used for this phase" paramJson={phaseDetails?.outputs || undefined} />
           <LogsViewer logs={phaseDetails?.logs || []} />
         </div>
-
       </div >
     </div >
   );
