@@ -20,7 +20,6 @@ export async function ExtractHtmlFromElementExecutor(environment: ExecutionEnvir
 
     const $ = cheerio.load(html)
     const element = $(selector)
-    console.log({ selector, element, html })
     if (!element.length) {
       console.error("No element found")
       environment.log.error("No element found")
@@ -28,7 +27,6 @@ export async function ExtractHtmlFromElementExecutor(environment: ExecutionEnvir
     }
 
     const extractedText = $.text(element)
-    console.log({ extractedText })
     if (!extractedText) {
       console.error("No text found")
       environment.log.error("No text found")
