@@ -15,19 +15,39 @@ export function DashboardLayoutContent({
   sidebar: React.ReactNode
 }) {
   const pathname = usePathname()
-  const isWorkflowEditor = pathname.startsWith("/workflows/editor") || pathname.startsWith("/workflows/executor")
-  const [isSidebarOpen, setIsSidebarOpen] = useState(isWorkflowEditor)
+  // Check if current page is an executor page by looking for '/workflows/executor/' in the path
+  const isExecutorPage = pathname.includes('/workflows/executor/')
 
+  // Split the path after '/workflows/executor/' into segments, return empty array if not found
+  const executorSegments = pathname.split('/workflows/executor/')[1]?.split('/') || []
+
+
+  // Check if we're on a detailed executor page (has more than one segment after executor)
+  const isDetailedExecutorPage = executorSegments.length > 1
+
+  // State for controlling sidebar visibility
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+
+  // Handler function to toggle sidebar open/closed state
   function handleOpenChange() {
     setIsSidebarOpen(!isSidebarOpen)
   }
 
+  // Effect to control sidebar state based on current page
   useEffect(() => {
-    if (isWorkflowEditor) return setIsSidebarOpen(false)
-    return setIsSidebarOpen(true)
+    // If not on executor page, keep sidebar open
+    if (!isExecutorPage) {
+      setIsSidebarOpen(true)
+      return
+    }
 
-  }, [setIsSidebarOpen, isWorkflowEditor])
-
+    // On detailed executor pages close sidebar, otherwise keep it open
+    if (isDetailedExecutorPage) {
+      setIsSidebarOpen(false)
+    } else {
+      setIsSidebarOpen(true)
+    }
+  }, [isExecutorPage, isDetailedExecutorPage])
 
   return (
     <SidebarProvider open={isSidebarOpen} onOpenChange={handleOpenChange}>
