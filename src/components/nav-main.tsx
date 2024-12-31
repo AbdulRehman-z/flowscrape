@@ -56,6 +56,7 @@ export function NavMain({ routes }: NavMainProps) {
             className="group/collapsible"
           >
             <SidebarMenuItem>
+
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   isActive={activeRoute.url === route.url || route.subRoutes?.some(sub => pathName.startsWith(sub.url))}

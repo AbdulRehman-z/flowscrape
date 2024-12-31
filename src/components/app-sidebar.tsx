@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 import { NavMain } from "@/components/nav-main";
 import {
   Sidebar,
@@ -14,8 +12,10 @@ import { navItems } from "@/lib/constants";
 import { Logo } from "./logo";
 import { Separator } from "./ui/separator";
 import { NavUser } from "./nav-user";
+import UserAvaliableCreditsBadge from "./user-avaliable-credits-badge";
+import { ComponentProps } from "react";
 
-type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+type AppSidebarProps = ComponentProps<typeof Sidebar> & {
   user: {
     email: string;
     name: string;
@@ -29,6 +29,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       <SidebarHeader>
         <Logo />
         <Separator />
+        <UserAvaliableCreditsBadge />
       </SidebarHeader>
       <SidebarContent>
         <NavMain routes={navItems} />
