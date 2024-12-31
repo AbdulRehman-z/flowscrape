@@ -1,6 +1,6 @@
 import { type workflowExecutionPhases } from "@/db"
 import { clsx, type ClassValue } from "clsx"
-import { intervalToDuration } from "date-fns"
+import { format, intervalToDuration, parse } from "date-fns"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -22,9 +22,13 @@ export function DatesToDurationString(end: Date | null | undefined, start: Date 
   // Calculate milliseconds between dates
   const timeElapsed = end.getTime() - start.getTime()
 
-  // If less than 1 second, return milliseconds
+  // If less than 1 second, convert to positive milliseconds
+  // Handle time less than 1 millisecond
+  if (timeElapsed < 1) {
+    return "< 1ms"
+  }
   if (timeElapsed < 1000) {
-    return `${timeElapsed}ms`
+    return `${Math.abs(timeElapsed)}ms`
   }
 
   // Convert milliseconds into duration object with minutes/seconds
@@ -50,4 +54,18 @@ type phase = Pick<typeof workflowExecutionPhases, "creditsConsumed">
  */
 export function getTotalCreditsConsumedByPhasesInWorkflow(phases: phase[]) {
   return phases.reduce((acc, phase) => acc + Number(phase.creditsConsumed), 0)
+}
+
+/**
+ * Formats a date string from one format to another
+ * @param inputDate - Input date string in format 'EEE MMM dd yyyy HH:mm:ss xxx'
+ * @returns Formatted date string in 'yyyy-MM-dd HH:mm:ss' format, or empty string if parsing fails
+ */
+export function formatDate(date: Date): string {
+  try {
+    return format(date, 'yyyy-MM-dd HH:mm:ss');
+  } catch (error) {
+    console.error(`Error parsing date: ${error}`);
+    return "error loading date";
+  }
 }
