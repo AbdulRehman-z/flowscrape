@@ -1,9 +1,9 @@
-import { db, workflowExecutions, workflows, workflowExecutionPhases, workflowExecutionPhaseLogs } from "@/db"
+import { db, workflowExecutions, workflows, workflowExecutionPhases, workflowExecutionPhaseLogs, userBalance } from "@/db"
 import { AppNodeType } from "@/types/app-node-types"
 import { Environment } from "@/types/environment"
 import { TaskParamEnum } from "@/types/task-type"
 import { WorkflowExecutionPhaseType, WorkflowExecutionStatusEnum, WorkflowExecutionPhaseStatusEnum } from "@/types/workflow-types"
-import { eq, inArray } from "drizzle-orm"
+import { and, eq, gte, inArray, sql } from "drizzle-orm"
 import { Browser, Page } from "puppeteer"
 import { ExecutorRegistory } from "./executor/registary"
 import { TaskREgistery } from "./task/task-registery"
@@ -37,25 +37,27 @@ export async function ExecuteWorkflow(executionId: string) {
     phases: {},
   }
 
-  const creditsConsumed = 0
+  let totalCreditsConsumed = 0
   let executionFailed = false
 
   // Execute phases
   for (const phase of execution.phases) {
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    const executionResult = await executeWorkflowPhase(phase as WorkflowExecutionPhaseType, environment, edges)
+    const { success, creditsConsumed
+    } = await executeWorkflowPhase(phase as WorkflowExecutionPhaseType, environment, edges)
 
-    console.log(`Phase ${phase.name} completed with result ${executionResult.success}`)
+    totalCreditsConsumed += creditsConsumed
 
-    if (!executionResult.success) {
+    if (!success) {
       executionFailed = true
       break
     }
   }
 
+
   // Finalize workflow
-  await finalizeWorkflowExecution(executionId, execution.workflowId, creditsConsumed, executionFailed)
+  await finalizeWorkflowExecution(executionId, execution.workflowId, totalCreditsConsumed, executionFailed)
   await cleanUpEnvironment(environment)
 }
 
@@ -64,7 +66,7 @@ async function initializeWorkflowExecution(workflowId: string, executionId: stri
   await db.update(workflowExecutions).set({
     status: WorkflowExecutionStatusEnum.RUNNING,
     startedAt: new Date(),
-  }).where(eq(workflowExecutions.workflowId, workflowId))
+  }).where(and(eq(workflowExecutions.workflowId, workflowId), eq(workflowExecutions.id, executionId)))
 
   await db.update(workflows).set({
     lastRunId: executionId,
@@ -97,12 +99,16 @@ async function executeWorkflowPhase(phase: WorkflowExecutionPhaseType, environme
 
   // Execute phase
   const creditsRequired = TaskREgistery[node.data.type].credits
-  console.log(`Executing phase ${phase.name} with credits required ${creditsRequired}`)
+  let success = await decrementUserCredits(phase.userId, creditsRequired, logCollector)
+  const creditsConsumed = success ? creditsRequired : 0
 
-  const success = await executePhase(phase, node, environment, logCollector)
+  if (success) {
+    success = await executePhase(phase, node, environment, logCollector)
+  }
+
   const outputs = environment.phases[node.id].outputs
-  await finalizePhase(phase.id, success, outputs, logCollector)
-  return { success }
+  await finalizePhase(phase.id, success, outputs, logCollector, creditsConsumed)
+  return { success, creditsConsumed }
 }
 
 async function executePhase(_phase: WorkflowExecutionPhaseType, node: AppNodeType, environment: Environment, logCollector: LogCollector) {
@@ -126,7 +132,6 @@ function setupEnvironmentForPhase(node: AppNodeType, environment: Environment, e
     const inputValue = node.data.inputs[input.name]
     if (inputValue) {
       environment.phases[node.id].inputs[input.name] = inputValue
-      console.log({ inputValue })
       continue
     }
 
@@ -135,7 +140,6 @@ function setupEnvironmentForPhase(node: AppNodeType, environment: Environment, e
     )
 
     if (!connectedEdge) {
-      console.log("Missing edge for input", input.name, "nodeId:", node.id)
       continue
     }
 
@@ -159,12 +163,13 @@ function createExecutionEnvironment(node: AppNodeType, environment: Environment,
 }
 
 // 5. Finalization Functions
-async function finalizePhase(phaseId: string, success: boolean, outputs: Record<string, unknown>, logCollector: LogCollector) {
+async function finalizePhase(phaseId: string, success: boolean, outputs: Record<string, unknown>, logCollector: LogCollector, creditsConsumed: number) {
   const completedAt = new Date()
   await db.update(workflowExecutionPhases)
     .set({
       status: success ? WorkflowExecutionPhaseStatusEnum.COMPLETED : WorkflowExecutionPhaseStatusEnum.FAILED,
       completedAt,
+      creditsConsumed,
       outputs: JSON.stringify(outputs),
     })
     .where(eq(workflowExecutionPhases.id, phaseId))
@@ -187,7 +192,7 @@ async function finalizeWorkflowExecution(executionId: string, workflowId: string
   await db.update(workflowExecutions).set({
     status: executionRunStatus,
     completedAt: new Date(),
-    creditsConsumed
+    creditsConsumed,
   }).where(eq(workflowExecutions.id, executionId))
 
   await db.update(workflows).set({
@@ -201,4 +206,17 @@ async function cleanUpEnvironment(environment: Environment) {
   if (environment.browser) {
     await environment.browser.close().catch((error) => console.error("cannot close browser, reason: ", error))
   }
+}
+
+async function decrementUserCredits(userId: string, credits: number, logCollector: LogCollector) {
+  try {
+    await db.update(userBalance).set({
+      credits: sql`${userBalance.credits} - ${credits}`
+    }).where(and(eq(userBalance.userId, userId), gte(userBalance.credits, credits)))
+    return true
+  } catch (error) {
+    logCollector.error(`Error decrementing user credits: ${error}`)
+    return false
+  }
+
 }
