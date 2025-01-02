@@ -7,15 +7,17 @@ import { useRouter } from "next/navigation"
 import ExecuteButton from "./topbar-executebtn"
 import PublishButton from "./topbar-publishbtn"
 import SaveButton from "./topbar-savebtn"
+import UnPublishButton from "./topbar-unpublishbtn"
 
 type TopbarProps = {
   workflowId: string
   title: string
   subtitle?: string
   hideButtons?: boolean
+  isPublished?: boolean
 }
 
-export default function Topbar({ workflowId, title, subtitle, hideButtons = false }: TopbarProps) {
+export default function Topbar({ workflowId, title, subtitle, hideButtons = false, isPublished }: TopbarProps) {
   const router = useRouter()
 
   function handleBack() {
@@ -44,8 +46,13 @@ export default function Topbar({ workflowId, title, subtitle, hideButtons = fals
             !hideButtons &&
             <div className="flex gap-x-3">
               <ExecuteButton workflowId={workflowId} />
-              <PublishButton workflowId={workflowId} />
-              <SaveButton workflowId={workflowId} />
+              {isPublished && <UnPublishButton workflowId={workflowId} />}
+              {!isPublished &&
+                <>
+                  <SaveButton workflowId={workflowId} />
+                  <PublishButton workflowId={workflowId} />
+                </>
+              }
             </div>
           }
         </div>
