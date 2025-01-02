@@ -3,14 +3,17 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { WorkflowStatus, WorkflowType } from "@/types/workflow-types";
-import { EditIcon, EllipsisVertical, FileTextIcon, PlayIcon, TrashIcon } from "lucide-react";
+import { CoinsIcon, CornerDownRightIcon, EditIcon, EllipsisVertical, FileTextIcon, MoveRightIcon, PlayIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { TooltipWrapper } from "../tooltip-provider";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
-import { useState } from "react";
 import { DeleteWorkflowDialog } from "./delete-workflow-dialog";
+import RunBtnWorkflow from "./runbtn-workflow";
+import { workflows } from "@/db";
+import SchedulerDialog from "./workflow-scheduler-dialog";
 
 type WorkflowCardProps = {
   workflow: WorkflowType
@@ -18,7 +21,7 @@ type WorkflowCardProps = {
 
 const statusColors = {
   [WorkflowStatus.DRAFT]: "bg-yellow-300 text-yellow-600",
-  [WorkflowStatus.PUBLISHED]: "bg-primary",
+  [WorkflowStatus.PUBLISHED]: "bg-green-300 text-green-600",
 }
 
 
@@ -29,6 +32,7 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
     <Card className="flex flex-col justify-center h-32 hover:shadow-md transition-shadow duration-200">
       <CardContent className="p-6">
         <div className="flex justify-between items-center">
+
           {/* Left side */}
           <div className="flex flex-row items-center space-x-4">
             <div className={cn("flex items-center justify-center rounded-full bg-gray-50 h-12 w-12 shadow-sm", statusColors[workflow.status as WorkflowStatus])}>
@@ -44,9 +48,12 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
                 {workflow.status}
               </Badge>
             </div>
+            <WorkflowSehdulerSection isDraft={isDraft} creditsCost={workflow.credits} workflowId={workflow.id} />
           </div>
+
           {/* Right side */}
           <div className="flex space-x-2 flex-row items-center">
+            <RunBtnWorkflow workflowId={workflow.id} flowDefination={workflow.defination} />
             <Button asChild variant={"outline"}>
               <Link href={`/workflows/editor/${workflow.id}`} className="">
                 <EditIcon size={16} />
@@ -102,5 +109,33 @@ function WorkflowActions({ workflowId, workflowName }: WorkflowActionsProps) {
         </DropdownMenuContent>
       </DropdownMenu >
     </>
+  )
+}
+
+type WorkflowSchedulerSectionProps = {
+  isDraft: boolean,
+  creditsCost: number,
+  workflowId: string
+
+}
+
+
+function WorkflowSehdulerSection({ isDraft, creditsCost, workflowId }: WorkflowSchedulerSectionProps) {
+
+  if (isDraft) return null
+  return (
+    <div>
+      <CornerDownRightIcon className="size-4 text-muted-foreground" />
+      <SchedulerDialog workflowId={workflowId} />
+      <MoveRightIcon className="size-4 text-muted-foreground" />
+      <TooltipWrapper tooltipContent="Credit consumption for full run">
+        <div className="flex items-center gap-3">
+          <Badge variant={"outline"} className="space-x-2 text-muted-foreground rounded-sm">
+            <CoinsIcon className="size-4" />
+            <span className="text-sm">{creditsCost}</span>
+          </Badge>
+        </div>
+      </TooltipWrapper>
+    </div>
   )
 }
