@@ -13,6 +13,10 @@ export type WorkflowType = {
   name: string;
   description: string | null;
   defination: string;
+  credits: number;
+  executionPlan: WorkflowExecutionPlanType;
+  nextRunAt: Date;
+  cron: string | null
   status: string;
   createdAt: Date;
   updatedAt: Date;
