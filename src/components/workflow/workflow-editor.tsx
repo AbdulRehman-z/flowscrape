@@ -1,7 +1,7 @@
 "use client"
 
 import { FlowValidationContextProvider } from "@/contexts/useFlowValidationContext";
-import { WorkflowType } from "@/types/workflow-types";
+import { WorkflowStatus, WorkflowType } from "@/types/workflow-types";
 import { ReactFlowProvider } from "@xyflow/react";
 import WorkflowEditorTaskMenu from "./editor-task-menu";
 import Topbar from "./topbar/topbar";
@@ -22,6 +22,7 @@ export default function WorkflowEditor({ workflow }: EditorProps) {
 
           <div className="col-start-2">
             <Topbar
+              isPublished={workflow.status === WorkflowStatus.PUBLISHED}
               workflowId={workflow.id}
               title="Workflow Editor"
               subtitle={workflow.name}
