@@ -11,7 +11,7 @@ export const useUpdateWorkflow = () => {
       queryClient.invalidateQueries({
         queryKey: ["getWorkflowById"]
       })
-      toast.success("Workflow updated successfully")
+      toast.success("Workflow saved successfully")
     },
     onError: (error) => {
       toast.error(error.message)
