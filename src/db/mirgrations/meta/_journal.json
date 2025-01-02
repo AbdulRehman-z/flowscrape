@@ -36,6 +36,20 @@
       "when": 1735371930772,
       "tag": "0004_nice_harrier",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1735802602518,
+      "tag": "0005_little_bruce_banner",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1735833472197,
+      "tag": "0006_quiet_xavin",
+      "breakpoints": true
     }
   ]
 }
