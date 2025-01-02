@@ -12,6 +12,7 @@ export const getWorkflowExecutions = async (workflowId: string) => {
       throw new Error("Not authenticated");
     }
     const userId = session.user.id;
+
     const executions = await db.select()
       .from(workflowExecutions)
       .where(
