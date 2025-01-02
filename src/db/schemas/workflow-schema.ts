@@ -1,4 +1,5 @@
 import { relations } from 'drizzle-orm';
+import { time } from 'drizzle-orm/mysql-core';
 import {
   text,
   timestamp,
@@ -18,9 +19,13 @@ export const workflows = pgTable(
     name: varchar('name', { length: 255 }).notNull(),
     description: text('description'),
     defination: text('defination').notNull().unique(),
+    executionPlan: text('execution_plan'),
+    cron: text("cron"),
+    creditsCost: integer('credits_cost').notNull().default(0),
     lastRunsAt: timestamp('last_runs_at'),
     lastRunStatus: text('last_execution_status'),
     lastRunId: text('last_execution_id'),
+    nextRunAt: timestamp('next_run_at').notNull().defaultNow(),
     status: varchar('status', { length: 50 }).notNull().default('draft'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
