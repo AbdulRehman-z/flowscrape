@@ -74,7 +74,7 @@ export default function ExecutionPageContent({ initialData, workflowId }: Execut
           )
         }
 
-        <div className="px-10 py-7 flex flex-col gap-y-4">
+        {selectedPhase && <div className="px-10 py-7 flex flex-col gap-y-4">
           <div className="flex items-center gap-x-3">
             <Badge className="flex items-center gap-x-2 rounded-full shadow-none  ring-2 ring-sidebar-border  bg-sidebar text-muted-foreground hover:bg-sidebar/80">
               <CoinsIcon size={20} />
@@ -90,6 +90,7 @@ export default function ExecutionPageContent({ initialData, workflowId }: Execut
           <ParameterViewer title="Outputs" subtitle="Outputs used for this phase" paramJson={phaseDetails?.outputs || undefined} />
           <LogsViewer logs={phaseDetails?.logs || []} />
         </div>
+        }
       </div >
     </div >
   );
