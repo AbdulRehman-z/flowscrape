@@ -1,8 +1,12 @@
+"use server"
+
 import { auth } from "@/auth"
 import { db, workflows } from "@/db"
 import { FlowToExecutionPlan } from "@/lib/workflow/execution-plan"
+import { CalculateWorkflowCost } from "@/lib/workflow/helpers"
 import { WorkflowStatus } from "@/types/workflow-types"
 import { and, eq } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
 
 export const publishWorkflowAction = async ({ id, flowDefination }: {
   id: string,
@@ -25,8 +29,10 @@ export const publishWorkflowAction = async ({ id, flowDefination }: {
     throw new Error("Workflow is not in draft")
   }
 
-  const parsedFlow = JSON.parse(flowDefination)
-  const result = FlowToExecutionPlan(parsedFlow.nodes, parsedFlow.edges)
+  const flow = JSON.parse(flowDefination)
+
+
+  const result = FlowToExecutionPlan(flow.nodes, flow.edges)
 
   if (result.errors) {
     throw new Error("flow defination not valid")
@@ -36,4 +42,16 @@ export const publishWorkflowAction = async ({ id, flowDefination }: {
     throw new Error("no execution plan generated")
   }
 
+  const creditsCost = CalculateWorkflowCost(flow.nodes)
+  await db.update(workflows)
+    .set({
+      defination: flowDefination,
+      executionPlan: JSON.stringify(result.executionPlan),
+      creditsCost,
+      status: WorkflowStatus.PUBLISHED
+    })
+    .where(and(eq(workflows.id, id), eq(workflows.userId, userId)))
+
+  revalidatePath(`/workflows/editor/${id}`)
+  revalidatePath(`/workflows/executions/${id}`)
 }
