@@ -24,7 +24,6 @@ export function DashboardLayoutContent({
 
   // Split the path after '/workflows/executions/' into segments, return empty array if not found
   const executorSegments = pathname.split('/workflows/executions/')[1]?.split('/') || []
-  console.log({ executorSegments })
 
   // Check if we're on a detailed executions page (has more than one segment after executions)
   const isDetailedExecutorPage = executorSegments.length > 1
@@ -52,7 +51,6 @@ export function DashboardLayoutContent({
       setIsSidebarOpen(true)
     }
   }, [isExecutorPage, isDetailedExecutorPage])
-
 
   return (
     <SidebarProvider open={isSidebarOpen} onOpenChange={handleOpenChange}>
