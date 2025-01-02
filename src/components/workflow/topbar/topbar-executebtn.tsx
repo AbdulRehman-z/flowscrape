@@ -21,7 +21,7 @@ export default function ExecuteButton({ workflowId }: ExecuteButtonProps) {
 
     executeWorkflow({
       workflowId,
-      defination: JSON.stringify(toObject())
+      flowDefination: JSON.stringify(toObject())
     })
   }
 
