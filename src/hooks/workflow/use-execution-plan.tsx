@@ -47,11 +47,11 @@ export const useExecutionPlanMutation = () => {
   const { mutate: executeWorkflow, isPending: isExecuting } = useMutation({
     mutationFn: runWorkflowAction,
     onSuccess: () => {
-      toast.success("Workflow executed successfully")
+      toast.success("Workflow executed successfully", { id: "run-workflow" })
     },
     onError: (error) => {
       console.error("error", error)
-      toast.error("Error executing workflow")
+      toast.error("Error executing workflow", { id: "run-workflow" })
     }
   })
 
