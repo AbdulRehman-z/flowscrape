@@ -1,8 +1,9 @@
 "use client"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { getWorkflowById } from "@/data/workflow/get-workflow";
 import { cn } from "@/lib/utils";
-import { WorkflowStatus, WorkflowType } from "@/types/workflow-types";
+import { WorkflowStatus } from "@/types/workflow-types";
 import { CoinsIcon, CornerDownRightIcon, EditIcon, EllipsisVertical, FileTextIcon, MoveRightIcon, PlayIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -12,11 +13,10 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { DeleteWorkflowDialog } from "./delete-workflow-dialog";
 import RunBtnWorkflow from "./runbtn-workflow";
-import { workflows } from "@/db";
 import SchedulerDialog from "./workflow-scheduler-dialog";
 
 type WorkflowCardProps = {
-  workflow: WorkflowType
+  workflow: Awaited<ReturnType<typeof getWorkflowById>>
 }
 
 const statusColors = {
@@ -34,21 +34,23 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
         <div className="flex justify-between items-center">
 
           {/* Left side */}
-          <div className="flex flex-row items-center space-x-4">
-            <div className={cn("flex items-center justify-center rounded-full bg-gray-50 h-12 w-12 shadow-sm", statusColors[workflow.status as WorkflowStatus])}>
-              {isDraft ? <FileTextIcon className="size-6" /> : <PlayIcon className="size-6" />}
+          <div className="flex flex-col items-start gap-y-2">
+            <div className="flex items-center gap-x-3 ">
+              <div className={cn("flex items-center justify-center rounded-full bg-gray-50 h-12 w-12 shadow-sm", statusColors[workflow.status as WorkflowStatus])}>
+                {isDraft ? <FileTextIcon className="size-6" /> : <PlayIcon className="size-6" />}
+              </div>
+              <div className="flex items-center space-x-3 text-base">
+                <h3 className="font-medium">
+                  <Link href={`/workflows/edit/${workflow.id}`} className="text-primary hover:underline hover:text-primary/80 transition-colors">
+                    {workflow.name}
+                  </Link>
+                </h3>
+                <Badge variant={"secondary"} className="text-sm rounded-full tracking-tight" >
+                  {workflow.status}
+                </Badge>
+              </div>
             </div>
-            <div className="flex items-center space-x-3 text-base">
-              <h3 className="font-medium">
-                <Link href={`/workflows/edit/${workflow.id}`} className="text-primary hover:underline hover:text-primary/80 transition-colors">
-                  {workflow.name}
-                </Link>
-              </h3>
-              <Badge variant={"secondary"} className="text-sm rounded-full tracking-tight" >
-                {workflow.status}
-              </Badge>
-            </div>
-            <WorkflowSehdulerSection isDraft={isDraft} creditsCost={workflow.credits} workflowId={workflow.id} />
+            <WorkflowSehdulerSection isDraft={isDraft} creditsCost={workflow.creditsCost} workflowId={workflow.id} />
           </div>
 
           {/* Right side */}
@@ -121,11 +123,12 @@ type WorkflowSchedulerSectionProps = {
 
 
 function WorkflowSehdulerSection({ isDraft, creditsCost, workflowId }: WorkflowSchedulerSectionProps) {
+  console.log({ creditsCost })
 
   if (isDraft) return null
   return (
-    <div>
-      <CornerDownRightIcon className="size-4 text-muted-foreground" />
+    <div className="flex items-center gap-x-1 ml-3">
+      <CornerDownRightIcon className="size-6 -mt-2 text-muted-foreground" />
       <SchedulerDialog workflowId={workflowId} />
       <MoveRightIcon className="size-4 text-muted-foreground" />
       <TooltipWrapper tooltipContent="Credit consumption for full run">
