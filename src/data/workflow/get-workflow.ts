@@ -5,10 +5,14 @@ import { eq } from "drizzle-orm";
 export const getWorkflowById = async (workflowId: string) => {
   try {
 
-    const result = await db.select().from(workflows).where(eq(workflows.id, workflowId));
-    return result.at(0) ?? null;
-  } catch (error) {
+    const [result] = await db.select().from(workflows).where(eq(workflows.id, workflowId));
+
+    if (!result) {
+      throw new Error(`Couldn't load workflow with id ${workflowId}`)
+    }
+    return result
+  } catch (error: any) {
     console.error(error);
-    throw new Error("Something went wrong");
+    throw new Error("Error:", error);
   }
 };
