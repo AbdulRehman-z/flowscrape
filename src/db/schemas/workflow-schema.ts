@@ -25,7 +25,7 @@ export const workflows = pgTable(
     lastRunsAt: timestamp('last_runs_at'),
     lastRunStatus: text('last_execution_status'),
     lastRunId: text('last_execution_id'),
-    nextRunAt: timestamp('next_run_at').notNull().defaultNow(),
+    nextRunAt: timestamp('next_run_at'),
     status: varchar('status', { length: 50 }).notNull().default('draft'),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
