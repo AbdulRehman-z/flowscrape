@@ -1,4 +1,3 @@
-"use client"
 import { useUpdateExecutionCron } from "@/hooks/workflow/use-update-execution-cron"
 import { cn } from "@/lib/utils"
 import parser from "cron-parser"
@@ -42,9 +41,9 @@ const CRON_EXAMPLES = [
 ] as const
 
 export default function SchedulerDialog({ workflowId, savedCron }: SchedulerDialogProps) {
-  const [cron, setCron] = useState("")
+  const [cron, setCron] = useState(savedCron || "")
   const [validCron, setValidCron] = useState(false)
-  const [readableCron, setReadableCron] = useState(savedCron || null)
+  const [readableCron, setReadableCron] = useState(savedCron || "")
   const { updateExecutionCron, isUpdatingExecutionCron } = useUpdateExecutionCron()
   const { isRemovingExecutionCron, removeExecutionCron } = useRemoveExecutionCron()
 
@@ -68,31 +67,29 @@ export default function SchedulerDialog({ workflowId, savedCron }: SchedulerDial
       setValidCron(false)
       setReadableCron("Invalid cron expression")
     }
-  }, [cron, setValidCron, setReadableCron])
-
+  }, [cron])
 
   const workflowHasValidCron = savedCron && savedCron.length > 0
   const readableSavedCron = savedCron && cronstrue.toString(savedCron)
+  const showDeleteIcon = savedCron && readableSavedCron === readableCron
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="link" size="sm">
           <div className="flex items-center gap-2">
-            {
-              workflowHasValidCron
-                ? <>
-                  <TriangleAlertIcon className="size-4 text-muted-foreground" />
-                  <span className="text-base font-medium">Set schedule</span>
-                </>
-                : <>
-                  <ClockIcon className="size-4 text-muted-foreground" />
-                  <span className="text-base font-medium">{readableSavedCron}</span>
-                </>
-            }
+            {workflowHasValidCron ? (
+              <ClockIcon className="size-4 text-muted-foreground" />
+            ) : (
+              <TriangleAlertIcon className="size-4 text-muted-foreground" />
+            )}
+            <span className="text-base font-medium">
+              {workflowHasValidCron ? readableSavedCron : "Set schedule"}
+            </span>
           </div>
         </Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-md">
         <CustomDialogHeader
           title="Schedule workflow execution"
@@ -100,23 +97,33 @@ export default function SchedulerDialog({ workflowId, savedCron }: SchedulerDial
           subtitle="Set up automated periodic execution using cron expressions"
         />
         <Separator />
-        <div className="space-y-4 px-6 py-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Cron Expression</label>
-            <Input
-              value={cron}
-              onChange={(e) => setCron(e.target.value)}
-              placeholder="* * * * *"
-              className="font-mono"
-            />
-          </div>
 
-          {cron &&
-            <DialogClose asChild>
-              <Button variant="outline" onClick={() => removeExecutionCron(workflowId)} className="w-full sm:w-auto absolute right-2 top-2 rounded-full bg-destructive text-foreground p-1 hover:bg-destructive/80">Remove current cron</Button>
-              <TrashIcon className="size-4 text-muted-foreground" />
-            </DialogClose>
-          }
+        <div className="space-y-4 px-6 py-4">
+          <div className="relative space-y-2">
+            <label className="text-sm font-medium">Cron Expression</label>
+            <div className="relative">
+              <Input
+                value={cron}
+                onChange={(e) => setCron(e.target.value)}
+                placeholder="* * * * *"
+                className={cn(
+                  "font-mono",
+                  showDeleteIcon && "pr-10"
+                )}
+              />
+              {showDeleteIcon && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => removeExecutionCron(workflowId)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground hover:text-destructive"
+                  disabled={isRemovingExecutionCron}
+                >
+                  <TrashIcon className="size-4" />
+                </Button>
+              )}
+            </div>
+          </div>
 
           <div className={cn(
             "p-3 rounded-lg text-sm transition-colors",
@@ -127,51 +134,56 @@ export default function SchedulerDialog({ workflowId, savedCron }: SchedulerDial
             {validCron ? readableCron : "Invalid cron expression"}
           </div>
 
-
-
           <div className="space-y-3">
             <p className="text-sm font-medium text-muted-foreground">Common Examples:</p>
             <div className="grid grid-cols-1 gap-2">
               {CRON_EXAMPLES.map((example) => (
-                <button
+                <Button
+                  variant="outline"
                   key={example.expression}
                   onClick={() => setCron(example.expression)}
                   className={cn(
-                    "flex items-center gap-x-2 p-2 rounded-lg text-sm transition-colors hover:bg-accent",
-                    cron === example.expression && "bg-accent"
+                    "w-full h-auto justify-start text-left p-3 transition-all",
+                    cron === example.expression && "ring-1 ring-primary border-primary bg-primary/5"
                   )}
                 >
-                  <example.icon className="size-4 text-muted-foreground" />
-                  <div className="flex flex-col items-start">
-                    <span className="font-mono text-xs">{example.expression}</span>
-                    <span className="text-muted-foreground">{example.description}</span>
+                  <div className="flex items-start gap-3">
+                    <example.icon className="size-4 text-muted-foreground shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-mono text-xs font-medium">{example.expression}</span>
+                      <span className="text-xs text-muted-foreground">{example.description}</span>
+                    </div>
                   </div>
-                </button>
+                </Button>
               ))}
             </div>
           </div>
 
-          <div className="rounded-lg border bg-card p-3 text-xs text-muted-foreground space-y-1">
+          <div className="rounded-lg border bg-muted/50 p-3 text-xs text-muted-foreground space-y-1.5">
             <p className="font-medium text-foreground">Format Reference:</p>
-            <p>minute hour day-of-month month day-of-week</p>
-            <p className="text-[10px]">Values: 0-59 0-23 1-31 1-12 0-7 (0 or 7 is Sunday)</p>
-            <p className="text-[10px]">Special characters: * (any) / (step) - (range) , (list)</p>
+            <p className="font-mono">minute hour day-of-month month day-of-week</p>
+            <div className="space-y-0.5 text-[11px]">
+              <p>Values: 0-59 0-23 1-31 1-12 0-7 (0 or 7 is Sunday)</p>
+              <p>Special characters: * (any) / (step) - (range) , (list)</p>
+            </div>
           </div>
         </div>
+
         <DialogFooter className="px-6 pb-6 gap-2 sm:gap-0">
           <DialogClose asChild>
-            <Button variant="outline" className="w-full sm:w-auto">
-              Cancel
-            </Button>
+            <Button variant="outline" className="w-full sm:w-auto">Cancel</Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button
-              onClick={handleSave}
-              disabled={!validCron || isUpdatingExecutionCron}
-              className="w-full sm:w-auto"
-            >
-              Save schedule
-            </Button>
+            {!showDeleteIcon && (
+              <Button
+                onClick={handleSave}
+                disabled={!validCron || isUpdatingExecutionCron}
+                className="w-full sm:w-auto"
+              >
+                {workflowHasValidCron ? "Update Schedule" : "Save schedule"}
+              </Button>
+            )
+            }
           </DialogClose>
         </DialogFooter>
       </DialogContent>
