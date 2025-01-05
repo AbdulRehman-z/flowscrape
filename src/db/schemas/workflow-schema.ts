@@ -18,7 +18,7 @@ export const workflows = pgTable(
     userId: text('user_id').notNull(),
     name: varchar('name', { length: 255 }).notNull(),
     description: text('description'),
-    defination: text('defination').notNull().unique(),
+    defination: text('defination').notNull(),
     executionPlan: text('execution_plan'),
     cron: text("cron"),
     creditsCost: integer('credits_cost').notNull().default(0),
