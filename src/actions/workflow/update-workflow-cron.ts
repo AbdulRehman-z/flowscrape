@@ -1,4 +1,5 @@
 "use server"
+
 import { auth } from "@/auth"
 import { db, workflows } from "@/db"
 import parser from "cron-parser"
@@ -13,13 +14,10 @@ export const updateWorkflowCronAction = async ({ workflowId, cron }: { workflowI
 
   try {
     const interval = parser.parseExpression(cron, { utc: true })
-    const result = await db.update(workflows).set({
+    await db.update(workflows).set({
       cron,
       nextRunAt: interval.next().toDate()
     }).where(and(eq(workflows.id, workflowId), eq(workflows.userId, userId)))
-
-    return result
-
   } catch (error) {
     console.error(error)
     throw new Error("Invalid cron expression")
