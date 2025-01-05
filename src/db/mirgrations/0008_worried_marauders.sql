@@ -1,0 +1,1 @@
+ALTER TABLE "workflow" DROP CONSTRAINT "workflow_defination_unique";
