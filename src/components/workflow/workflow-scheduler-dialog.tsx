@@ -11,6 +11,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTrigger } from 
 import { Input } from "../ui/input"
 import { Separator } from "../ui/separator"
 import { useRemoveExecutionCron } from "@/hooks/workflow/use-remove-execution-cron"
+import { TooltipWrapper } from "../tooltip-provider"
 
 type SchedulerDialogProps = {
   workflowId: string
@@ -112,15 +113,17 @@ export default function SchedulerDialog({ workflowId, savedCron }: SchedulerDial
                 )}
               />
               {showDeleteIcon && (
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => removeExecutionCron(workflowId)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground hover:text-destructive"
-                  disabled={isRemovingExecutionCron}
-                >
-                  <TrashIcon className="size-4" />
-                </Button>
+                <TooltipWrapper tooltipContent="Delete current schedule">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => removeExecutionCron(workflowId)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground hover:text-destructive"
+                    disabled={isRemovingExecutionCron}
+                  >
+                    <TrashIcon className="size-4" />
+                  </Button>
+                </TooltipWrapper>
               )}
             </div>
           </div>
