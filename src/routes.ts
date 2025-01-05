@@ -29,4 +29,4 @@ export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
  * @constant
  * @type {string}
  */
-export const publicRoutes = ["/", "/auth/verification"];
+export const publicRoutes = ["/", "/auth/verification", "/api/workflows/cron", "/api/workflows/execute"];
