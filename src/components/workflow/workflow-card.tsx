@@ -50,7 +50,7 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
                 </Badge>
               </div>
             </div>
-            <WorkflowSehdulerSection isDraft={isDraft} creditsCost={workflow.creditsCost} workflowId={workflow.id} />
+            <WorkflowSehdulerSection isDraft={isDraft} creditsCost={workflow.creditsCost} workflowId={workflow.id} cron={workflow.cron} />
           </div>
 
           {/* Right side */}
@@ -118,18 +118,17 @@ type WorkflowSchedulerSectionProps = {
   isDraft: boolean,
   creditsCost: number,
   workflowId: string
-
+  cron: string | null
 }
 
 
-function WorkflowSehdulerSection({ isDraft, creditsCost, workflowId }: WorkflowSchedulerSectionProps) {
-  console.log({ creditsCost })
+function WorkflowSehdulerSection({ isDraft, creditsCost, workflowId, cron }: WorkflowSchedulerSectionProps) {
 
   if (isDraft) return null
   return (
     <div className="flex items-center gap-x-1 ml-3">
       <CornerDownRightIcon className="size-6 -mt-2 text-muted-foreground" />
-      <SchedulerDialog workflowId={workflowId} />
+      <SchedulerDialog workflowId={workflowId} savedCron={cron} key={`${cron}-${workflowId}`} />
       <MoveRightIcon className="size-4 text-muted-foreground" />
       <TooltipWrapper tooltipContent="Credit consumption for full run">
         <div className="flex items-center gap-3">
