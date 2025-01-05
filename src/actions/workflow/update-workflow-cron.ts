@@ -4,6 +4,7 @@ import { auth } from "@/auth"
 import { db, workflows } from "@/db"
 import parser from "cron-parser"
 import { and, eq } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
 
 export const updateWorkflowCronAction = async ({ workflowId, cron }: { workflowId: string, cron: string }) => {
   const session = await auth()
@@ -22,4 +23,7 @@ export const updateWorkflowCronAction = async ({ workflowId, cron }: { workflowI
     console.error(error)
     throw new Error("Invalid cron expression")
   }
+
+
+  revalidatePath("/workflows")
 }
