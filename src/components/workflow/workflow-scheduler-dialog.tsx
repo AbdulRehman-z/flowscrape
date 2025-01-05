@@ -17,8 +17,12 @@ type SchedulerDialogProps = {
   workflowId: string
   savedCron: string | null
 }
-
 const CRON_EXAMPLES = [
+  {
+    expression: "*/15 * * * * *",
+    description: "Every 15 seconds",
+    icon: ClockIcon,
+  },
   {
     expression: "*/15 * * * *",
     description: "Every 15 minutes",
@@ -39,7 +43,7 @@ const CRON_EXAMPLES = [
     description: "Every Monday at midnight",
     icon: CalendarDaysIcon,
   },
-] as const
+] as const;
 
 export default function SchedulerDialog({ workflowId, savedCron }: SchedulerDialogProps) {
   const [cron, setCron] = useState(savedCron || "")
