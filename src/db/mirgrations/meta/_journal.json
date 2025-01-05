@@ -50,6 +50,13 @@
       "when": 1735833472197,
       "tag": "0006_quiet_xavin",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1736059305120,
+      "tag": "0007_noisy_vampiro",
+      "breakpoints": true
     }
   ]
 }
