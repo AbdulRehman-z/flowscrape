@@ -57,6 +57,13 @@
       "when": 1736059305120,
       "tag": "0007_noisy_vampiro",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1736094626782,
+      "tag": "0008_worried_marauders",
+      "breakpoints": true
     }
   ]
 }
