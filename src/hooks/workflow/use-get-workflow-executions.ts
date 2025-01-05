@@ -6,7 +6,7 @@ export const useGetWorkflowExecutions = (workflowId: string, initialData: Awaite
     queryKey: ['workflow-executions', workflowId],
     initialData,
     queryFn: () => getWorkflowExecutions(workflowId),
-    refetchInterval: 1000 * 60 * 5, // 30 seconds
+    refetchInterval: 1000 * 60 * 30, // 30 seconds
   })
 
   return {
