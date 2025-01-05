@@ -6,6 +6,7 @@ import { TaskREgistery } from "@/lib/workflow/task/task-registery"
 import { WorkflowExecutionPhaseStatusEnum, WorkflowExecutionPlanType, WorkflowExecutionStatusEnum, WorkflowTriggerEnum } from "@/types/workflow-types"
 import cronsParser from "cron-parser"
 import { eq } from "drizzle-orm"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 export async function GET(req: Request) {
   const authHeader = req.headers.get("Authorization")
@@ -94,6 +95,5 @@ export async function GET(req: Request) {
   }
 
   await ExecuteWorkflow(executionResult.id, nextRun)
-
   return new Response("Workflow execution completed", { status: 200 })
 }
