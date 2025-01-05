@@ -4,6 +4,7 @@ import { getWorkflowExecutions } from "@/actions/workflow/get-workflow-execution
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useGetWorkflowExecutions } from "@/hooks/workflow/use-get-workflow-executions";
 import { DatesToDurationString, formatDate } from "@/lib/utils";
+import { formatDistanceToNow } from "date-fns";
 import { useRouter } from "next/navigation";
 
 type ExecutionsTableProps = {
@@ -25,6 +26,7 @@ export default function ExecutionsTable({ workflowId, initialData }: ExecutionsT
           <TableHead className="px-6 py-4 text-left font-semibold">Created At</TableHead>
           <TableHead className="px-6 py-4 text-left font-semibold">Time Taken</TableHead>
           <TableHead className="px-6 py-4 text-left font-semibold">Credits Consumed</TableHead>
+          <TableHead className="px-6 py-4 text-left font-semibold">Last run </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -38,6 +40,7 @@ export default function ExecutionsTable({ workflowId, initialData }: ExecutionsT
             <TableCell className="px-6 py-4">{formatDate(execution.startedAt)}</TableCell>
             <TableCell className="px-6 py-4">{DatesToDurationString(execution.completedAt, execution.startedAt)}</TableCell>
             <TableCell className="px-6 py-4">{execution.creditsConsumed}</TableCell>
+            <TableCell className="px-6 py-4">{formatDistanceToNow(execution.startedAt, { addSuffix: true })}</TableCell>
           </TableRow >
         ))
         }
