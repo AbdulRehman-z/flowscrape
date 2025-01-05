@@ -12,7 +12,7 @@ import { LogCollector } from "@/types/log.types"
 import { createLogCollector } from "../logs"
 
 // 1. Main Workflow Execution Orchestrator
-export async function ExecuteWorkflow(executionId: string) {
+export async function ExecuteWorkflow(executionId: string, nextRun?: Date) {
   // Fetch workflow details
   const execution = await db.query.workflowExecutions.findFirst({
     where: eq(workflowExecutions.id, executionId),
@@ -29,7 +29,7 @@ export async function ExecuteWorkflow(executionId: string) {
   const edges = JSON.parse(execution.workflow.defination).edges as Edge[]
 
   // Initialize workflow
-  await initializeWorkflowExecution(execution.workflowId, executionId)
+  await initializeWorkflowExecution(execution.workflowId, executionId, nextRun)
   await initializePhaseStatuses(execution)
 
   // Setup environment
@@ -55,14 +55,13 @@ export async function ExecuteWorkflow(executionId: string) {
     }
   }
 
-
   // Finalize workflow
   await finalizeWorkflowExecution(executionId, execution.workflowId, totalCreditsConsumed, executionFailed)
   await cleanUpEnvironment(environment)
 }
 
 // 2. Workflow Initialization Functions
-async function initializeWorkflowExecution(workflowId: string, executionId: string) {
+async function initializeWorkflowExecution(workflowId: string, executionId: string, nextRun?: Date) {
   await db.update(workflowExecutions).set({
     status: WorkflowExecutionStatusEnum.RUNNING,
     startedAt: new Date(),
@@ -71,7 +70,8 @@ async function initializeWorkflowExecution(workflowId: string, executionId: stri
   await db.update(workflows).set({
     lastRunId: executionId,
     lastRunsAt: new Date(),
-    lastRunStatus: WorkflowExecutionStatusEnum.RUNNING
+    lastRunStatus: WorkflowExecutionStatusEnum.RUNNING,
+    ...(nextRun && { nextRunAt: nextRun })
   })
 }
 
@@ -218,5 +218,4 @@ async function decrementUserCredits(userId: string, credits: number, logCollecto
     logCollector.error(`Error decrementing user credits: ${error}`)
     return false
   }
-
 }
