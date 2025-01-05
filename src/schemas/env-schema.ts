@@ -8,7 +8,9 @@ const envSchema = z.object({
   AUTH_FACEBOOK_ID: z.string(),
   AUTH_FACEBOOK_SECRET: z.string(),
   RESEND_API_KEY: z.string(),
-  NODE_ENV: z.string()
+  NODE_ENV: z.string(),
+  NEXT_PUBLIC_URL: z.string(),
+  API_SECRET: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
