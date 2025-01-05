@@ -7,6 +7,9 @@ import WorkflowCard from "@/components/workflow/workflow-card";
 import { AlertCircle, ArrowLeftIcon, InboxIcon, Link } from "lucide-react";
 import { Suspense } from "react";
 
+
+export const revalidate = 120// 2 minutes
+
 export default function Page() {
   return (
     <section className="flex flex-1 h-full flex-col section-padding">
@@ -28,7 +31,6 @@ export default function Page() {
     </section >
   )
 }
-
 
 function UserWorkflowsSkeleton() {
   return (
@@ -66,7 +68,7 @@ async function UserWorkflows() {
         </div >
       )
     }
-
+    console.log(workflows)
     return (
       <div className="space-y-2">
         {
