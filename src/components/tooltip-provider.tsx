@@ -13,6 +13,9 @@ type TooltipWrapperProps = {
 
 
 export function TooltipWrapper({ children, tooltipContent }: TooltipWrapperProps) {
+
+  if (!tooltipContent) return <>{children}</>
+
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip >
