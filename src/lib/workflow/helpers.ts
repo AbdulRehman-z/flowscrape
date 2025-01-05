@@ -1,5 +1,7 @@
 import { AppNodeType } from "@/types/app-node-types";
 import { TaskREgistery } from "./task/task-registery";
+import { env } from "@/schemas/env-schema";
+import { timingSafeEqual } from "crypto";
 /**
  * Calculates the total credit cost of a workflow by summing up the credit costs of all nodes.
  * @param nodes Array of workflow nodes to calculate costs for
@@ -9,3 +11,27 @@ export const CalculateWorkflowCost = (nodes: AppNodeType[]) => {
   return nodes.reduce((acc, node) => TaskREgistery[node.data.type].credits + acc, 0
   );
 };
+
+
+/**
+*  Returns the full url of the app.
+* @param path relative path e.g. api/workflows/execute/1
+* @returns full url e.g. https://app.example.com/api/workflows/execute/1
+*/
+export const getAppUrl = (path: string) => {
+  return `${env.NEXT_PUBLIC_URL}/${path}`;
+}
+
+
+/**
+ * Checks if the token is valid.
+ * @param token Token to check
+ * @returns true if the token is valid, false otherwise
+ */
+export const isValidToken = (token: string) => {
+  try {
+    return timingSafeEqual(Buffer.from(token), Buffer.from(env.API_SECRET))
+  } catch {
+    return false;
+  }
+}
