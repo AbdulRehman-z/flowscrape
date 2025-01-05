@@ -122,4 +122,5 @@ export const runWorkflowAction = async (form: { workflowId: string, flowDefinati
   redirect(
     `/workflows/executions/${workflowId}/${executionResult.id}`
   )
+
 }
