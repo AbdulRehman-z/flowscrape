@@ -4,7 +4,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { getWorkflowById } from "@/data/workflow/get-workflow";
 import { cn } from "@/lib/utils";
 import { WorkflowStatus } from "@/types/workflow-types";
-import { CoinsIcon, CornerDownRightIcon, EditIcon, EllipsisVertical, FileTextIcon, MoveRightIcon, PlayIcon, TrashIcon } from "lucide-react";
+import { format, formatDistanceToNow } from "date-fns";
+import { ChevronRight, Clock2, CoinsIcon, CornerDownRightIcon, EditIcon, EllipsisVertical, FileTextIcon, MoveRightIcon, PlayIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { TooltipWrapper } from "../tooltip-provider";
@@ -12,6 +13,8 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { DeleteWorkflowDialog } from "./delete-workflow-dialog";
+import DuplicateWorkflowDialog from "./duplicate-workflow-dialog";
+import ExecutionStatusBadge from "./execution-status-badge";
 import RunBtnWorkflow from "./runbtn-workflow";
 import SchedulerDialog from "./workflow-scheduler-dialog";
 
@@ -24,12 +27,11 @@ const statusColors = {
   [WorkflowStatus.PUBLISHED]: "bg-green-300 text-green-600",
 }
 
-
 export default function WorkflowCard({ workflow }: WorkflowCardProps) {
   const isDraft = workflow.status === WorkflowStatus.DRAFT;
-
+  console.log({ isDraft })
   return (
-    <Card className="flex flex-col justify-center h-32 hover:shadow-md transition-shadow duration-200">
+    <Card className="flex flex-col justify-center min-h-32 hover:shadow-md transition-shadow duration-200 group/card">
       <CardContent className="p-6">
         <div className="flex justify-between items-center">
 
@@ -48,6 +50,9 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
                 <Badge variant={"secondary"} className="text-sm rounded-full tracking-tight" >
                   {workflow.status}
                 </Badge>
+                <TooltipWrapper tooltipContent={workflow.description!}>
+                  <DuplicateWorkflowDialog workflowId={workflow.id} />
+                </TooltipWrapper>
               </div>
             </div>
             <WorkflowSehdulerSection isDraft={isDraft} creditsCost={workflow.creditsCost} workflowId={workflow.id} cron={workflow.cron} />
@@ -66,10 +71,12 @@ export default function WorkflowCard({ workflow }: WorkflowCardProps) {
           </div>
         </div>
       </CardContent>
+      {/* <CardFooter className="w-full "> */}
+      <LastRunDetails workflow={workflow} />
+      {/* </CardFooter> */}
     </Card>
   )
 }
-
 
 type WorkflowActionsProps = {
   workflowId: string,
@@ -121,7 +128,6 @@ type WorkflowSchedulerSectionProps = {
   cron: string | null
 }
 
-
 function WorkflowSehdulerSection({ isDraft, creditsCost, workflowId, cron }: WorkflowSchedulerSectionProps) {
 
   if (isDraft) return null
@@ -139,5 +145,43 @@ function WorkflowSehdulerSection({ isDraft, creditsCost, workflowId, cron }: Wor
         </div>
       </TooltipWrapper>
     </div>
+  )
+}
+
+type LastRunDetailsProps = {
+  workflow: Awaited<ReturnType<typeof getWorkflowById>>
+}
+
+function LastRunDetails({ workflow }: LastRunDetailsProps) {
+  const { lastRunStatus, lastRunsAt, nextRunAt, lastRunId } = workflow
+  const nextScheduledRun = nextRunAt && format(nextRunAt, "yyyy-MM-dd HH:mm")
+
+  return (
+    <div className="flex items-center justify-between bg-primary/5 px-4 py-2 text-muted-foreground w-full">
+      {
+        lastRunId ? (
+          <>
+            {/* left side */}
+            <div className="flex items-center">
+              <Link href={`workflows/executions/${workflow.id}/${lastRunId}`} className="flex items-center text-sm gap-2 group">
+                <span>Last run: </span>
+                <ExecutionStatusBadge status={lastRunStatus!} />
+                <span className="text-sm">{formatDistanceToNow(lastRunsAt!, { addSuffix: true })}</span>
+                <ChevronRight size={12} className="-translate-x-[2px] group-hover:translate-x-0 transition" />
+              </Link>
+            </div >
+
+            {/* right side */}
+            <div className="flex items-center justify-between gap-x-2 text-muted-foreground" >
+              <Clock2 size={16} className="text-muted-foreground" />
+              <span>Next run at: </span>
+              <div className="flex gap-x-2">
+                <span className="text-sm">({nextScheduledRun}) UTC</span>
+              </div>
+            </div>
+          </>
+        ) : <span className="text-muted-foreground text-sm">No runs yet</span>
+      }
+    </div >
   )
 }
