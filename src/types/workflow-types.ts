@@ -66,6 +66,7 @@ export enum WorkflowExecutionPhaseStatusEnum {
 export enum WorkflowTriggerEnum {
   MANUAL = "MANUAL",
   SCHEDULED = "SCHEDULED",
+  CRON = "CRON",
 }
 
 export type WorkflowExecutionPhaseType = {
