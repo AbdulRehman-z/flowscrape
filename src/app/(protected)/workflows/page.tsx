@@ -8,7 +8,7 @@ import { AlertCircle, ArrowLeftIcon, InboxIcon, Link } from "lucide-react";
 import { Suspense } from "react";
 
 
-export const revalidate = 120// 2 minutes
+// export const revalidate = 120// 2 minutes
 
 export default function Page() {
   return (
@@ -68,7 +68,7 @@ async function UserWorkflows() {
         </div >
       )
     }
-    console.log(workflows)
+    // console.log(workflows)
     return (
       <div className="space-y-2">
         {
