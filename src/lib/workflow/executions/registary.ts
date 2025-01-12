@@ -1,9 +1,12 @@
 import { ExecutionEnvironment } from "@/types/environment";
 import { type TaskTypeEnum } from "@/types/task-type";
 import { WorkflowTaskType } from "@/types/workflow-types";
+import { ClickElementExecutor } from "./click-element-executor";
+import { ExtractHtmlFromElementExecutor } from "./extract-html-from-element-executor";
+import { FillInputExecutor } from "./fill-input-executor";
 import { LaunchBrowserExecutor } from "./launch-browser-executor";
 import { PageToHtmlExecutor } from "./page-to-html-executor";
-import { ExtractHtmlFromElementExecutor } from "./extract-html-from-element-executor";
+import { WaitForElementExecutor } from "./wait-for-element-executor";
 
 type ExecutorFn<T extends WorkflowTaskType> = (
   environment: ExecutionEnvironment<T>
@@ -21,4 +24,7 @@ export const ExecutorRegistory: RegistryType = {
   LAUNCH_BROWSER: LaunchBrowserExecutor,
   PAGE_TO_HTML: PageToHtmlExecutor,
   EXTRACT_TEXT_FROM_ELEMENT: ExtractHtmlFromElementExecutor,
+  FILL_INPUT: FillInputExecutor,
+  CLICK_ELEMENT: ClickElementExecutor,
+  WAIT_FOR: WaitForElementExecutor,
 }
