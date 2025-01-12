@@ -29,7 +29,7 @@ const statusColors = {
 
 export default function WorkflowCard({ workflow }: WorkflowCardProps) {
   const isDraft = workflow.status === WorkflowStatus.DRAFT;
-  console.log({ isDraft })
+  // console.log({ isDraft })
   return (
     <Card className="flex flex-col justify-center min-h-32 hover:shadow-md transition-shadow duration-200 group/card">
       <CardContent className="p-6">

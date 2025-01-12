@@ -6,7 +6,6 @@ import { TaskREgistery } from "@/lib/workflow/task/task-registery"
 import { WorkflowExecutionPhaseStatusEnum, WorkflowExecutionPlanType, WorkflowExecutionStatusEnum, WorkflowTriggerEnum } from "@/types/workflow-types"
 import cronsParser from "cron-parser"
 import { eq } from "drizzle-orm"
-import { revalidatePath, revalidateTag } from "next/cache"
 
 export async function GET(req: Request) {
   const authHeader = req.headers.get("Authorization")
@@ -38,7 +37,7 @@ export async function GET(req: Request) {
     try {
       const cron = cronsParser.parseExpression(workflow.cron!, { utc: true })
       nextRun = cron.next().toDate()
-      console.log({ nextRun })
+      // console.log({ nextRun })
       // Create new workflow execution record in database
       const [workflowExecution] = await db.insert(workflowExecutions)
         .values({

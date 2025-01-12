@@ -6,7 +6,7 @@ import { TooltipWrapper } from "@/components/tooltip-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader } from "@/components/ui/sidebar";
-import { DatesToDurationString, getTotalCreditsConsumedByPhasesInWorkflow } from "@/lib/utils";
+import { DatesToDurationString } from "@/lib/utils";
 import PhaseStatusBadge from "@/lib/workflow/executions/phase-status-badge";
 import { WorkflowExecutionStatusEnum } from "@/types/workflow-types";
 import { useQuery } from "@tanstack/react-query";
@@ -125,7 +125,6 @@ type ExecutionLabelProps = {
 }
 
 function ExecutionLabel({ icon, label, value }: ExecutionLabelProps) {
-
   const Icon = icon;
   return (
     <div className="flex gap-2 items-center justify-between">

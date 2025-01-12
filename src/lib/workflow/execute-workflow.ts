@@ -72,7 +72,7 @@ async function initializeWorkflowExecution(workflowId: string, executionId: stri
     lastRunsAt: new Date(),
     lastRunStatus: WorkflowExecutionStatusEnum.RUNNING,
     ...(nextRun && { nextRunAt: nextRun })
-  })
+  }).where(eq(workflows.id, workflowId))
 }
 
 async function initializePhaseStatuses(execution: { phases: { id: string }[] }) {
@@ -114,6 +114,7 @@ async function executeWorkflowPhase(phase: WorkflowExecutionPhaseType, environme
 async function executePhase(_phase: WorkflowExecutionPhaseType, node: AppNodeType, environment: Environment, logCollector: LogCollector) {
   const runFn = ExecutorRegistory[node.data.type as keyof typeof ExecutorRegistory]
   if (!runFn) {
+    logCollector.error(`Executor ${node.data.type} not found`)
     throw new Error(`Executor ${node.data.type} not found`)
   }
 
@@ -194,6 +195,8 @@ async function finalizeWorkflowExecution(executionId: string, workflowId: string
     completedAt: new Date(),
     creditsConsumed,
   }).where(eq(workflowExecutions.id, executionId))
+
+  console.log({ executionRunStatus })
 
   await db.update(workflows).set({
     lastRunId: executionId,
