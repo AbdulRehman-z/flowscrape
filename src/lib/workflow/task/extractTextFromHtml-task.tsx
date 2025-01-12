@@ -2,7 +2,7 @@ import { TaskParamEnum, TaskTypeEnum } from "@/types/task-type";
 import { WorkflowTaskType } from "@/types/workflow-types";
 import { Code2Icon, LucideProps } from "lucide-react";
 
-export const ExtractTextFromElement = {
+export const ExtractTextFromElementTask = {
   type: TaskTypeEnum.EXTRACT_TEXT_FROM_ELEMENT,
   label: "Extract text from element",
   icon: (props: LucideProps) => <Code2Icon className="stroke-blue-400" {...props} />,
