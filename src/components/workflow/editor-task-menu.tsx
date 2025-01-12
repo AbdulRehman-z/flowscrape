@@ -40,14 +40,34 @@ export default function WorkflowEditorTaskMenu() {
       <SidebarContent>
         <SidebarGroup className="px-0">
           <SidebarGroupContent>
-            <Accordion className="w-full" type="multiple" defaultValue={["data-extraction"]}>
+            <Accordion className="w-full" type="multiple" defaultValue={["data-extraction", "user-interactions"]}>
+
+              <AccordionItem value="user-interactions">
+                <AccordionTrigger className="no-underline">
+                  User interactions
+                </AccordionTrigger>
+                <AccordionContent className=" flex flex-col gap-y-2">
+                  <TaskMenuButton taskType={TaskTypeEnum.FILL_INPUT} />
+                  <TaskMenuButton taskType={TaskTypeEnum.CLICK_ELEMENT} />
+                </AccordionContent>
+              </AccordionItem>
+
               <AccordionItem value="data-extraction">
-                <AccordionTrigger>
+                <AccordionTrigger className="no-underline">
                   Data extraction
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
                   <TaskMenuButton taskType={TaskTypeEnum.PAGE_TO_HTML} />
                   <TaskMenuButton taskType={TaskTypeEnum.EXTRACT_TEXT_FROM_ELEMENT} />
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="data-extraction">
+                <AccordionTrigger className="no-underline">
+                  Timing controls
+                </AccordionTrigger>
+                <AccordionContent className=" flex flex-col gap-y-2">
+                  <TaskMenuButton taskType={TaskTypeEnum.WAIT_FOR} />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
