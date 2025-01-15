@@ -4,6 +4,8 @@ import { useReactFlow } from "@xyflow/react"
 import { useCallback } from "react"
 import StringParam from "./param/string-param"
 import BrowserInstanceParam from "./param/browser-instance-param"
+import SelectParam from "./param/select-param"
+import CredentialsParam from "./param/select-param copy"
 
 type NodeParamFieldProps = {
   param: TaskParamType
@@ -32,6 +34,10 @@ export default function NodeParamField({ param, nodeId, disabled }: NodeParamFie
       return <StringParam param={param} inputValue={inputValue} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
     case TaskParamEnum.BROWSER_INSTANCE:
       return <BrowserInstanceParam param={param} inputValue={""} updateNodeParamValue={updateNodeParamValue} />
+    case TaskParamEnum.SELECT:
+      return <SelectParam param={param} inputValue={inputValue} updateNodeParamValue={updateNodeParamValue} />
+    case TaskParamEnum.CREDENTIALS:
+      return <CredentialsParam param={param} inputValue={inputValue} updateNodeParamValue={updateNodeParamValue} />
     default:
       return (
         <p className="text-sm text-muted-foreground">No param passed</p>

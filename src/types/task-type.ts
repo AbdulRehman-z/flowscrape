@@ -4,7 +4,9 @@ export enum TaskTypeEnum {
   EXTRACT_TEXT_FROM_ELEMENT = "EXTRACT_TEXT_FROM_ELEMENT",
   FILL_INPUT = 'FILL_INPUT',
   CLICK_ELEMENT = "CLICK_ELEMENT",
-  WAIT_FOR = "WAIT_FOR"
+  WAIT_FOR = "WAIT_FOR",
+  DELIVER_VIA_WEBHOOK = "DELIVER_VIA_WEBHOOK",
+  EXTRACT_DATA_WITH_AI = "EXTRACT_DATA_WITH_AI"
 }
 
 export enum TaskParamEnum {
@@ -14,7 +16,9 @@ export enum TaskParamEnum {
   BOOLEAN = 'BOOLEAN',
   ARRAY = 'ARRAY',
   OBJECT = 'OBJECT',
-  SELECT = "SELECT"
+  SELECT = "SELECT",
+  CREDENTIALS = "CREDENTIALS"
+
 }
 
 export type TaskParamType = {

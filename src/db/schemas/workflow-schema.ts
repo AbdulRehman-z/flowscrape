@@ -1,13 +1,11 @@
 import { relations } from 'drizzle-orm';
-import { time } from 'drizzle-orm/mysql-core';
 import {
+  integer,
+  pgTable,
   text,
   timestamp,
-  pgTable,
-  varchar,
-  integer,
   uniqueIndex,
-  // uniqueIndex,
+  varchar,
 } from 'drizzle-orm/pg-core';
 
 // Workflow table

@@ -40,7 +40,7 @@ export default function WorkflowEditorTaskMenu() {
       <SidebarContent>
         <SidebarGroup className="px-0">
           <SidebarGroupContent>
-            <Accordion className="w-full" type="multiple" defaultValue={["data-extraction", "user-interactions"]}>
+            <Accordion className="w-full" type="multiple" defaultValue={["data-extraction", "user-interactions", "timing", "webhook", "ai-data-extraction"]}>
 
               <AccordionItem value="user-interactions">
                 <AccordionTrigger className="no-underline">
@@ -62,7 +62,7 @@ export default function WorkflowEditorTaskMenu() {
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="data-extraction">
+              <AccordionItem value="timing">
                 <AccordionTrigger className="no-underline">
                   Timing controls
                 </AccordionTrigger>
@@ -70,6 +70,25 @@ export default function WorkflowEditorTaskMenu() {
                   <TaskMenuButton taskType={TaskTypeEnum.WAIT_FOR} />
                 </AccordionContent>
               </AccordionItem>
+
+              <AccordionItem value="webhook">
+                <AccordionTrigger className="no-underline">
+                  Deliver via webhook
+                </AccordionTrigger>
+                <AccordionContent className=" flex flex-col gap-y-2">
+                  <TaskMenuButton taskType={TaskTypeEnum.DELIVER_VIA_WEBHOOK} />
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="ai-data-extraction">
+                <AccordionTrigger className="no-underline">
+                  Extract with ai
+                </AccordionTrigger>
+                <AccordionContent className=" flex flex-col gap-y-2">
+                  <TaskMenuButton taskType={TaskTypeEnum.EXTRACT_DATA_WITH_AI} />
+                </AccordionContent>
+              </AccordionItem>
+
             </Accordion>
           </SidebarGroupContent>
         </SidebarGroup>
