@@ -11,6 +11,7 @@ export async function ClickElementExecutor(environment: ExecutionEnvironment<typ
     }
 
     await environment.getPage()!.click(selector)
+    environment.log.info(`Clicked element ${selector}`)
     return true
   } catch (error) {
     console.error(error)

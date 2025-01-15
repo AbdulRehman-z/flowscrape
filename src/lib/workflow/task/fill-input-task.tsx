@@ -6,7 +6,7 @@ export const FillInputTask = {
   type: TaskTypeEnum.FILL_INPUT,
   label: "Fill Input",
   icon: (props) => <EditIcon className="stroke-orange-400" {...props} />,
-  isEntryPoint: true,
+  isEntryPoint: false,
   credits: 5,
   inputs: [
     {

@@ -17,6 +17,7 @@ export async function FillInputExecutor(environment: ExecutionEnvironment<typeof
     }
 
     await environment.getPage()!.type(selector, value)
+    environment.log.info(`Filled input ${selector} with value ${value}`)
 
     return true
   } catch (error) {

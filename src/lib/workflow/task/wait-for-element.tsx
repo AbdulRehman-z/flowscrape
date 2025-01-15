@@ -1,12 +1,12 @@
-import { TaskTypeEnum, TaskParamEnum } from "@/types/task-type";
+import { TaskParamEnum, TaskTypeEnum } from "@/types/task-type";
 import { WorkflowTaskType } from "@/types/workflow-types";
-import { Clock2, GlobeIcon, LucideProps } from "lucide-react";
+import { Clock2 } from "lucide-react";
 
 export const WaitforElementTask = {
   type: TaskTypeEnum.WAIT_FOR,
   label: "Wait for element",
   icon: (props) => <Clock2 className="stroke-amber-400" {...props} />,
-  isEntryPoint: true,
+  isEntryPoint: false,
   credits: 3,
   inputs: [
     {

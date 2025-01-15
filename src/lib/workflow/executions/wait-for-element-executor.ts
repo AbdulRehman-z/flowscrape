@@ -10,8 +10,13 @@ export async function WaitForElementExecutor(environment: ExecutionEnvironment<t
       return false
     }
 
-    await environment.getPage()!.waitForSelector(selector)
+    const visibility = environment.getInput("Visibility")
+    if (!visibility) {
+      environment.log.error("Visibility is required")
+    }
 
+    await environment.getPage()!.waitForSelector(selector, { visible: visibility === "visible", hidden: visibility === "hidden" })
+    environment.log.info(`Element ${selector} is ${visibility}`)
     return true
   } catch (error) {
     console.error(error)
