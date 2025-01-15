@@ -12,7 +12,7 @@ export default function UserAvaliableCreditsBadge() {
     < SidebarMenuButton
       asChild
       className="py-5 border-2"
-      tooltip={"Total credits"}
+      tooltip={`Total credits: ${avaliableCredits}`}
     >
       <Link href={" /billings"} className="flex w-full h-full items-center gap-2 justify-center">
         {isLoadingCredits ? <Loader2Icon size={20} className="animate-spin" /> : <>

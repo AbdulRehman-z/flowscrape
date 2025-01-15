@@ -20,7 +20,7 @@ export default function Page() {
             Manage your workflows here.
           </p>
         </div>
-        <CreateWorkflowDialog triggerText="Crete Workflow" />
+        <CreateWorkflowDialog triggerText="Create Workflow" />
       </div >
 
       <div className="h-full p-6">
