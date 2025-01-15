@@ -3,21 +3,23 @@ import { drizzle as DrizzleHttp } from 'drizzle-orm/neon-http';
 // Import all schemas
 import * as auth from './schemas/auth-schema';
 import * as workflow from './schemas/workflow-schema';
-// Import any other schema files you have
+import * as crediential from "./schemas/credential-schema"
 import ws from 'ws';
+import { env } from '@/schemas/env-schema';
 
-let connectionString = process.env.DATABASE_URL;
+let connectionString = env.AUTH_DRIZZLE_URL;
 
 // Combine all schemas into a single object
 const schema = {
   ...auth,
   ...workflow,
+  ...crediential
   // ...spread other schemas here
 };
 
 
 // Configuring Neon for local development
-if (process.env.NODE_ENV === 'development') {
+if (env.NODE_ENV === 'development') {
   connectionString = 'postgres://postgres:postgres@db.localtest.me:5432/main';
   neonConfig.fetchEndpoint = (host) => {
     const [protocol, port] = host === 'db.localtest.me' ? ['http', 4444] : ['https', 443];
@@ -59,5 +61,6 @@ export const {
   workflowExecutionPhases,
   workflowExecutions,
   workflowExecutionPhaseLogs,
-  userBalance
+  userBalance,
+  credentials
 } = schema;

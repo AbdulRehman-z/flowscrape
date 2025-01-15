@@ -11,6 +11,7 @@ const envSchema = z.object({
   NODE_ENV: z.string(),
   NEXT_PUBLIC_URL: z.string(),
   API_SECRET: z.string(),
+  ENCRYPTION_KEY: z.string()
 });
 
 export const env = envSchema.parse(process.env);
