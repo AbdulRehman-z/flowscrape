@@ -14,7 +14,7 @@ export default function UserAvaliableCreditsBadge() {
       className="py-5 border-2"
       tooltip={`Total credits: ${avaliableCredits}`}
     >
-      <Link href={" /billings"} className="flex w-full h-full items-center gap-2 justify-center">
+      <Link href={"/billings"} className="flex w-full h-full items-center gap-2 justify-center">
         {isLoadingCredits ? <Loader2Icon size={20} className="animate-spin" /> : <>
           <CoinsIcon size={20} className="stroke-green-500" />
           <ReactCountUpWrapper value={avaliableCredits!} />
