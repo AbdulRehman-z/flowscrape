@@ -3,6 +3,8 @@ import { Button } from "../ui/button"
 import { TaskTypeEnum } from "@/types/task-type"
 import { TaskREgistery } from "@/lib/workflow/task/task-registery"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
+import { Badge } from "../ui/badge"
+import { CoinsIcon } from "lucide-react"
 
 type TaskMenuProps = {
   taskType: TaskTypeEnum
@@ -17,11 +19,15 @@ function TaskMenuButton({ taskType }: TaskMenuProps) {
   }
 
   return (
-    <Button variant={"secondary"} className="flex w-full items-center justify-start " draggable onDragStart={(event) => onDragStart(event, taskType)}>
+    <Button variant={"secondary"} className="flex w-full items-center justify-between gap-2 p-4 hover:bg-foreground/10" draggable onDragStart={(event) => onDragStart(event, taskType)}>
       <div className="flex gap-2">
         <task.icon size={20} />
         <span>{task.label}</span>
       </div>
+      <Badge className="flex items-center justify-center gap-x-1" variant={"outline"}>
+        <CoinsIcon size={16} className="stroke-green-400" />
+        <span>{task.credits}</span>
+      </Badge>
     </Button>
   )
 }
@@ -36,12 +42,11 @@ export default function WorkflowEditorTaskMenu() {
           </div>
         </div>
         <SidebarInput placeholder="Type to search..." />
-      </SidebarHeader>
+      </SidebarHeader >
       <SidebarContent>
         <SidebarGroup className="px-0">
           <SidebarGroupContent>
-            <Accordion className="w-full" type="multiple" defaultValue={["data-extraction", "user-interactions", "timing", "webhook", "ai-data-extraction"]}>
-
+            <Accordion className="w-full" type="multiple" defaultValue={["data-extraction", "user-interactions", "timing", "webhook", "ai-data-extraction", "read-json",]}>
               <AccordionItem value="user-interactions">
                 <AccordionTrigger className="no-underline">
                   User interactions
@@ -49,6 +54,8 @@ export default function WorkflowEditorTaskMenu() {
                 <AccordionContent className=" flex flex-col gap-y-2">
                   <TaskMenuButton taskType={TaskTypeEnum.FILL_INPUT} />
                   <TaskMenuButton taskType={TaskTypeEnum.CLICK_ELEMENT} />
+                  <TaskMenuButton taskType={TaskTypeEnum.NAVIGATE_TO_url} />
+                  <TaskMenuButton taskType={TaskTypeEnum.SCROLL_TO_ELEMENT} />
                 </AccordionContent>
               </AccordionItem>
 
@@ -59,6 +66,7 @@ export default function WorkflowEditorTaskMenu() {
                 <AccordionContent className=" flex flex-col gap-y-2">
                   <TaskMenuButton taskType={TaskTypeEnum.PAGE_TO_HTML} />
                   <TaskMenuButton taskType={TaskTypeEnum.EXTRACT_TEXT_FROM_ELEMENT} />
+                  <TaskMenuButton taskType={TaskTypeEnum.EXTRACT_DATA_WITH_AI} />
                 </AccordionContent>
               </AccordionItem>
 
@@ -73,19 +81,20 @@ export default function WorkflowEditorTaskMenu() {
 
               <AccordionItem value="webhook">
                 <AccordionTrigger className="no-underline">
-                  Deliver via webhook
+                  Results delivery
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
                   <TaskMenuButton taskType={TaskTypeEnum.DELIVER_VIA_WEBHOOK} />
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="ai-data-extraction">
+              <AccordionItem value="read-json">
                 <AccordionTrigger className="no-underline">
-                  Extract with ai
+                  Data storage
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
-                  <TaskMenuButton taskType={TaskTypeEnum.EXTRACT_DATA_WITH_AI} />
+                  <TaskMenuButton taskType={TaskTypeEnum.READ_PROPERTY_FROM_JSON} />
+                  <TaskMenuButton taskType={TaskTypeEnum.ADD_PROPERTY_TO_JSON} />
                 </AccordionContent>
               </AccordionItem>
 
@@ -93,6 +102,6 @@ export default function WorkflowEditorTaskMenu() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-    </Sidebar>
+    </Sidebar >
   )
 }
