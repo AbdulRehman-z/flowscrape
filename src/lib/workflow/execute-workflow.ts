@@ -196,8 +196,6 @@ async function finalizeWorkflowExecution(executionId: string, workflowId: string
     creditsConsumed,
   }).where(eq(workflowExecutions.id, executionId))
 
-  console.log({ executionRunStatus })
-
   await db.update(workflows).set({
     lastRunId: executionId,
     lastRunsAt: new Date(),

@@ -48,7 +48,6 @@ export const runWorkflowAction = async (form: { workflowId: string, flowDefinati
     const result = FlowToExecutionPlan(flow.nodes, flow.edges)
 
     if (result.errors) {
-      console.log({ errors: result.errors })
       throw new Error("Invalid workflow flowDefination")
     }
 
