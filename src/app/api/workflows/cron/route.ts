@@ -28,7 +28,6 @@ function triggerWorkflow(workflowId: string) {
     method: "GET",
     cache: "no-store",
   }).then((response) => {
-    console.log({ response })
   }).catch((error) => {
     console.error(error)
   })

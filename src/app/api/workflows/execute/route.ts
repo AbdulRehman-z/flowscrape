@@ -37,7 +37,6 @@ export async function GET(req: Request) {
     try {
       const cron = cronsParser.parseExpression(workflow.cron!, { utc: true })
       nextRun = cron.next().toDate()
-      // console.log({ nextRun })
       // Create new workflow execution record in database
       const [workflowExecution] = await db.insert(workflowExecutions)
         .values({
