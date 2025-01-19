@@ -2,6 +2,8 @@ import { AppNodeType } from "@/types/app-node-types";
 import { TaskREgistery } from "./task/task-registery";
 import { env } from "@/schemas/env-schema";
 import { timingSafeEqual } from "crypto";
+import { Period } from "@/types/dashboard-types";
+import { endOfMonth, startOfMonth } from "date-fns";
 /**
  * Calculates the total credit cost of a workflow by summing up the credit costs of all nodes.
  * @param nodes Array of workflow nodes to calculate costs for
@@ -33,5 +35,16 @@ export const isValidToken = (token: string) => {
     return timingSafeEqual(Buffer.from(token), Buffer.from(env.API_SECRET))
   } catch {
     return false;
+  }
+}
+
+
+export const PeriodToDateRange = (period: Period) => {
+  const startDate = startOfMonth(new Date(period.year, period.month))
+  const endDate = endOfMonth(new Date(period.year, period.month))
+
+  return {
+    startDate,
+    endDate
   }
 }
