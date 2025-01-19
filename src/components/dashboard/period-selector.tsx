@@ -1,9 +1,8 @@
 "use client";
 
 import { Period } from "@/types/dashboard-types";
-import { Select } from "@radix-ui/react-select";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] as const;
@@ -27,12 +26,11 @@ export default function PeriodSelector({ periods, selectedPeriod }: PeriodSelect
         params.set("year", year);
         router.push(`?${params.toString()}`);
       }
-
       }>
-      <SelectTrigger>
-        <SelectValue />
+      <SelectTrigger className="min-w-52">
+        <SelectValue placeholder="Select a period" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="w-full">
         {
           periods.map((period, i) => (
             <SelectItem key={i} value={`${period.month}-${period.year}`}>
@@ -42,6 +40,5 @@ export default function PeriodSelector({ periods, selectedPeriod }: PeriodSelect
         }
       </SelectContent>
     </Select>
-
   );
 }
