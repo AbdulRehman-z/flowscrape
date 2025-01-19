@@ -1,3 +1,5 @@
+"use client"
+
 import ReactCountUp from "react-countup"
 import { useState, useEffect } from "react"
 
@@ -12,7 +14,7 @@ export default function ReactCountUpWrapper({ value }: ReactCountUpWrapperProps)
   }, [])
 
   if (!mounted) {
-    return <p>-1</p>
+    return <p>Counting...</p>
   }
 
   return <ReactCountUp className="font-semibold" start={0} end={value} duration={1} separator="," decimals={0} />
