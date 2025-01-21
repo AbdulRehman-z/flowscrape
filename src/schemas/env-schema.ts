@@ -11,7 +11,12 @@ const envSchema = z.object({
   NODE_ENV: z.string(),
   NEXT_PUBLIC_URL: z.string(),
   API_SECRET: z.string(),
-  ENCRYPTION_KEY: z.string()
+  ENCRYPTION_KEY: z.string(),
+  STRIPE_API_KEY: z.string(),
+  STRIPE_PRICE_ID_SMALL: z.string(),
+  STRIPE_PRICE_ID_MEDIUM: z.string(),
+  STRIPE_PRICE_ID_LARGE: z.string(),
+  STRIPE_WEBHOOK_SECRET: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
