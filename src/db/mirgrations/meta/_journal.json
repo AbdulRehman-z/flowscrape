@@ -71,6 +71,13 @@
       "when": 1736852342406,
       "tag": "0009_big_lady_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1737385160485,
+      "tag": "0010_overconfident_onslaught",
+      "breakpoints": true
     }
   ]
 }
