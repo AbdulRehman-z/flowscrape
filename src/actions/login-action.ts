@@ -13,6 +13,7 @@ import { eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 import { loginSchema } from "../schemas/auth-schema";
+import { redirect } from "next/navigation";
 
 export const loginAction = async (formData: z.infer<typeof loginSchema>) => {
   const validatedFields = loginSchema.safeParse(formData);
@@ -73,6 +74,7 @@ export const loginAction = async (formData: z.infer<typeof loginSchema>) => {
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
+    redirect("/setup")
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
@@ -86,5 +88,5 @@ export const loginAction = async (formData: z.infer<typeof loginSchema>) => {
     throw error;
   }
 
-  return { success: "Logged in" };
+  return { success: "Successfully logged in!" };
 };
