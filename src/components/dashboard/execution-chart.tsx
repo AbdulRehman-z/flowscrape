@@ -1,24 +1,24 @@
 "use client"
 
-import { ChartBarStacked, TrendingUp } from "lucide-react"
+import { Layers2 } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
+import { getWorkflowExecutionsStatsAction } from "@/actions/dashboard/get-executions-stats"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
   ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { getWorkflowExecutionsStats } from "@/actions/dashboard/get-executions-stats"
 // const chartData = [
 //   { month: "January", desktop: 186, mobile: 80 },
 //   { month: "February", desktop: 305, mobile: 200 },
@@ -40,15 +40,15 @@ const chartConfig = {
 } satisfies ChartConfig
 
 type ExecutionStatusChartProps = {
-  data: Awaited<ReturnType<typeof getWorkflowExecutionsStats>>
+  data: Awaited<ReturnType<typeof getWorkflowExecutionsStatsAction>>
 }
 
 export function ExecutionsStatusChart({ data }: ExecutionStatusChartProps) {
   return (
-    <Card>
+    <Card className="">
       <CardHeader>
         <CardTitle className="gap-x-2 flex items-center">
-          <ChartBarStacked size={30} />
+          <Layers2 size={30} />
           <span>Workflow execution status</span>
         </CardTitle>
         <CardDescription>
@@ -56,7 +56,7 @@ export function ExecutionsStatusChart({ data }: ExecutionStatusChartProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="mt-3">
-        <ChartContainer config={chartConfig} className="h-[500px] w-full">
+        <ChartContainer config={chartConfig} className="h-[195px] w-full">
           <AreaChart
             height={200}
             accessibilityLayer
@@ -73,13 +73,8 @@ export function ExecutionsStatusChart({ data }: ExecutionStatusChartProps) {
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => {
-                console.log({ value })
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", { month: "short", day: "numeric" })
-              }}
             />
-            <ChartLegend />
+            <ChartLegend content={<ChartLegendContent />} />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dot" />}
