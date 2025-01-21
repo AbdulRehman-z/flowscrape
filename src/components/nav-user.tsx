@@ -116,7 +116,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             {/* <DropdownMenuItem> */}
-            <Button onClick={handleSignOut} className="w-full" disabled={isPending}>
+            <Button variant={"outline"} onClick={handleSignOut} className="w-full" disabled={isPending}>
               <LogOut />
               Log out
             </Button>
