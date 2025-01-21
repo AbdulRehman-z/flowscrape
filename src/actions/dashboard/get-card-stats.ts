@@ -2,10 +2,10 @@
 
 import { auth } from "@/auth"
 import { db, workflowExecutionPhases, workflowExecutions } from "@/db"
-import { PeriodToDateRange, periodToDateRange } from "@/lib/workflow/helpers"
+import { PeriodToDateRange } from "@/lib/workflow/helpers"
 import { Period } from "@/types/dashboard-types"
 import { WorkflowExecutionPhaseType, WorkflowExecutionStatusEnum } from "@/types/workflow-types"
-import { and, eq, gte, lte, inArray, isNotNull, sql } from "drizzle-orm"
+import { and, eq, gte, inArray, isNotNull, sql } from "drizzle-orm"
 
 const { COMPLETED, FAILED } = WorkflowExecutionStatusEnum
 
@@ -29,7 +29,7 @@ export const getStatsCardsValuesAction = async (selectedPeriod: Period) => {
         eq(workflowExecutions.userId, userId),
         gte(workflowExecutions.startedAt, dateRange.startDate),
         // lte(workflowExecutions.startedAt, dateRange.endDate),
-        inArray(workflowExecutions.status, ['COMPLETED', 'FAILED']),
+        inArray(workflowExecutions.status, [COMPLETED, FAILED]),
       )
     )
     .leftJoin(

@@ -13,7 +13,7 @@ type Stats = Record<string, {
 }>
 
 
-export const getWorkflowExecutionsStats = async (period: Period) => {
+export const getWorkflowExecutionsStatsAction = async (period: Period) => {
   const session = await auth()
   if (!session?.user.id) {
     throw new Error("Not authenticated")
