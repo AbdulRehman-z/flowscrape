@@ -21,6 +21,7 @@ export default function NodeCard({ children, isSelected, nodeId }: NodeCardProps
     const { width, height } = measured
     const x = position.x + width! / 2
     const y = position.y + height! / 2
+
     if (x === undefined || y === undefined) return
 
     setCenter(x, y, {

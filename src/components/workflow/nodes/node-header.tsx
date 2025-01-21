@@ -34,7 +34,7 @@ export default function NodeHeader({ taskType, nodeId }: NodeHeaderProps) {
   }
 
   return (
-    <div className="flex items-center gap-2 p-2 ">
+    <div className="flex items-center gap-2 p-2">
       <task.icon size={16} />
       <div className="flex justify-between items-center w-full gap-x-2">
         <p className="text-xs font-bold uppercase text-muted-foreground">{task.label}</p>
