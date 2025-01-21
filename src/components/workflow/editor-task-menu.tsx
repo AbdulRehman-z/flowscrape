@@ -1,10 +1,10 @@
-import { SidebarHeader, SidebarInput, SidebarContent, SidebarGroup, SidebarGroupContent, Sidebar } from "../ui/sidebar"
-import { Button } from "../ui/button"
-import { TaskTypeEnum } from "@/types/task-type"
 import { TaskREgistery } from "@/lib/workflow/task/task-registery"
+import { TaskTypeEnum } from "@/types/task-type"
+import { CoinsIcon } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
 import { Badge } from "../ui/badge"
-import { CoinsIcon } from "lucide-react"
+import { Button } from "../ui/button"
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent } from "../ui/sidebar"
 
 type TaskMenuProps = {
   taskType: TaskTypeEnum
@@ -24,8 +24,8 @@ function TaskMenuButton({ taskType }: TaskMenuProps) {
         <task.icon size={20} />
         <span>{task.label}</span>
       </div>
-      <Badge className="flex items-center justify-center gap-x-1" variant={"outline"}>
-        <CoinsIcon size={16} className="stroke-green-400" />
+      <Badge className="flex items-center justify-center gap-x-[4px]" variant={"outline"}>
+        <CoinsIcon className="stroke-green-400" />
         <span>{task.credits}</span>
       </Badge>
     </Button>
@@ -34,21 +34,13 @@ function TaskMenuButton({ taskType }: TaskMenuProps) {
 
 export default function WorkflowEditorTaskMenu() {
   return (
-    <Sidebar collapsible="none" className="hidden border-r py-2 px-4 min-h-screen md:flex">
-      <SidebarHeader className="gap-3.5 border-b p-4">
-        <div className="flex w-full items-center justify-between">
-          <div className="text-base font-medium text-foreground">
-            <p>Tasks</p>
-          </div>
-        </div>
-        <SidebarInput placeholder="Type to search..." />
-      </SidebarHeader >
+    <Sidebar collapsible="none" className="hidden border-r py-2 px-4 md:flex w-max">
       <SidebarContent>
         <SidebarGroup className="px-0">
           <SidebarGroupContent>
             <Accordion className="w-full" type="multiple" defaultValue={["data-extraction", "user-interactions", "timing", "webhook", "ai-data-extraction", "read-json",]}>
               <AccordionItem value="user-interactions">
-                <AccordionTrigger className="no-underline">
+                <AccordionTrigger className="no-underline font-semibold">
                   User interactions
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
@@ -60,7 +52,7 @@ export default function WorkflowEditorTaskMenu() {
               </AccordionItem>
 
               <AccordionItem value="data-extraction">
-                <AccordionTrigger className="no-underline">
+                <AccordionTrigger className="no-underline font-semibold">
                   Data extraction
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
@@ -71,7 +63,7 @@ export default function WorkflowEditorTaskMenu() {
               </AccordionItem>
 
               <AccordionItem value="timing">
-                <AccordionTrigger className="no-underline">
+                <AccordionTrigger className="no-underline font-semibold">
                   Timing controls
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
@@ -80,7 +72,7 @@ export default function WorkflowEditorTaskMenu() {
               </AccordionItem>
 
               <AccordionItem value="webhook">
-                <AccordionTrigger className="no-underline">
+                <AccordionTrigger className="no-underline font-semibold">
                   Results delivery
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
@@ -89,7 +81,7 @@ export default function WorkflowEditorTaskMenu() {
               </AccordionItem>
 
               <AccordionItem value="read-json">
-                <AccordionTrigger className="no-underline">
+                <AccordionTrigger className="no-underline font-semibold">
                   Data storage
                 </AccordionTrigger>
                 <AccordionContent className=" flex flex-col gap-y-2">
