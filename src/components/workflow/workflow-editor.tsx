@@ -15,7 +15,7 @@ export default function WorkflowEditor({ workflow }: EditorProps) {
   return (
     <FlowValidationContextProvider>
       <ReactFlowProvider>
-        <div className="grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
+        <div className="grid h-full grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
           <div className="row-span-2">
             <WorkflowEditorTaskMenu />
           </div>

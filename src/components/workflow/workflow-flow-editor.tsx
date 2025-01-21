@@ -162,7 +162,6 @@ export default function FlowEditor({ workflow }: FlowEditorProps) {
         fitView
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        colorMode={currentTheme as "light" | "dark"}
       >
         <Controls position="top-left" fitViewOptions={fitViewOptions} />
         <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
