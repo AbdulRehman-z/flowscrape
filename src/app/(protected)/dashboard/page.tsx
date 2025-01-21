@@ -1,7 +1,9 @@
-import { getStatsCardsValues, getStatsCardsValuesAction } from "@/actions/dashboard/get-card-stats";
-import { getWorkflowExecutionsStats } from "@/actions/dashboard/get-executions-stats";
+import { getStatsCardsValuesAction } from "@/actions/dashboard/get-card-stats";
+import { getCreditsUsageStatsAction } from "@/actions/dashboard/get-credits-stats";
+import { getWorkflowExecutionsStatsAction } from "@/actions/dashboard/get-executions-stats";
 import { getPeriodsAction } from "@/actions/dashboard/get-periods-action";
-import ExecutionsChart, { ExecutionsStatusChart } from "@/components/dashboard/execution-chart";
+import { CreditsStatusChart } from "@/components/dashboard/credits-chart";
+import { ExecutionsStatusChart } from "@/components/dashboard/execution-chart";
 import PeriodSelector from "@/components/dashboard/period-selector";
 import StatsCard from "@/components/dashboard/stats-card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -38,12 +40,15 @@ export default async function Page({ searchParams }: PageProps) {
         </div>
       </div>
       {/* main */}
-      <div className="flex flex-col gap-y-10">
+      <div className="flex flex-col gap-y-7">
         <Suspense fallback={<StatsCardSkeleton type="card" />}>
           <StatsCards selectedPeriod={period} />
         </Suspense>
         <Suspense fallback={<StatsCardSkeleton type="executions" />}>
           <StatsExecutionStatus selectedPeriod={period} />
+        </Suspense>
+        <Suspense fallback={<StatsCardSkeleton type="executions" />}>
+          <StatsCreditsUsageStatus selectedPeriod={period} />
         </Suspense>
       </div>
     </section>
@@ -111,10 +116,15 @@ async function StatsCards({ selectedPeriod }: StatsCardsProps) {
 }
 
 async function StatsExecutionStatus({ selectedPeriod }: StatsCardsProps) {
-  const executions = await getWorkflowExecutionsStats(selectedPeriod)
+  const executions = await getWorkflowExecutionsStatsAction(selectedPeriod)
   return (
-    <div className="h-[500px]">
-      <ExecutionsStatusChart data={executions} />
-    </div>
+    <ExecutionsStatusChart data={executions} />
+  )
+}
+
+async function StatsCreditsUsageStatus({ selectedPeriod }: StatsCardsProps) {
+  const credits = await getCreditsUsageStatsAction(selectedPeriod)
+  return (
+    <CreditsStatusChart data={credits} title={"Credits usage"} description={"Credits consumed by workflows in the selected period showing both success and failed executions"} />
   )
 }
