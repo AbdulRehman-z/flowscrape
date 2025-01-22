@@ -29,4 +29,4 @@ export const DEFAULT_LOGIN_REDIRECT = "/setup";
  * @constant
  * @type {string}
  */
-export const publicRoutes = ["/", "/auth/verification", "/api/workflows/cron", "/api/workflows/execute"];
+export const publicRoutes = ["/", "/auth/verification", "/api/workflows/cron", "/api/workflows/execute", "api/webhooks/stripe"];
