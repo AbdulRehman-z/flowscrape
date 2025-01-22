@@ -72,28 +72,28 @@ npm run dev
 
 Create a `.env` file with the following variables:
 
-# Database
+### Database
 AUTH_DRIZZLE_URL="postgres://user:password@hostname:5432/database"
 
-# Authentication
+### Authentication
 AUTH_SECRET=your-auth-secret-key
 NODE_ENV=development
 NEXT_PUBLIC_URL=http://localhost:3000
 
-# OAuth Providers
+### OAuth Providers
 AUTH_GITHUB_ID=your-github-client-id
 AUTH_GITHUB_SECRET=your-github-client-secret
 AUTH_FACEBOOK_ID=your-facebook-client-id
 AUTH_FACEBOOK_SECRET=your-facebook-client-secret
 
-# Email Service
+### Email Service
 RESEND_API_KEY=your-resend-api-key
 
-# API and Security
+### API and Security
 API_SECRET=your-api-secret-key
 ENCRYPTION_KEY=your-encryption-key
 
-# Stripe Integration
+### Stripe Integration
 STRIPE_API_KEY=your-stripe-api-key
 STRIPE_PRICE_ID_SMALL=price_xxxxxxxxxxxxx_small
 STRIPE_PRICE_ID_MEDIUM=price_xxxxxxxxxxxxx_medium
