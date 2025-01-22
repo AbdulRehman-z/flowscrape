@@ -1,7 +1,6 @@
 import { getCreditsPurchasesAction } from "@/actions/billing/get-credits-prchases-action"
 import { getUserBalanceAction } from "@/actions/billing/get-user-balance-action"
 import { getCreditsUsageStatsAction } from "@/actions/dashboard/get-credits-stats"
-import CreditsPurchase from "@/components/billing/credits-card"
 import InvoiceBtn from "@/components/billing/invoice-btn"
 import { CreditsStatusChart } from "@/components/dashboard/credits-chart"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
