@@ -49,7 +49,6 @@ type ExecutionTableWrapperProps = {
 
 async function ExecutionTableWrapper({ workflowId }: ExecutionTableWrapperProps) {
   const initialExecutions = await getWorkflowExecutions(workflowId);
-  // console.log({ workflowId, initialExecutions });
   if (!initialExecutions) {
     return (
       <Alert variant="destructive" className="font-semibold text-base">

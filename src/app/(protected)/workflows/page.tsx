@@ -68,7 +68,6 @@ async function UserWorkflows() {
         </div >
       )
     }
-    // console.log(workflows)
     return (
       <div className="space-y-2">
         {
