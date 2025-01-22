@@ -17,7 +17,7 @@ A powerful, web-based workflow automation platform built with Next.js that enabl
 
 - Node.js (v18 or higher)
 - Docker and Docker Compose (optional)
-- npm or yarn package manager
+- npm, pnpm or yarn package manager
 - Neon Database local initialization
 - OAuth credentials (Facebook/GitHub)
 
