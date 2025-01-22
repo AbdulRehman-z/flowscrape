@@ -1,4 +1,5 @@
-import { stripe } from "@/lib/stripe"
+import { HandleCheckoutSessionCompleted } from "@/lib/stripe/handle-successfull-checkout"
+import { stripe } from "@/lib/stripe/stripe"
 import { env } from "@/schemas/env-schema"
 import { NextResponse } from "next/server"
 
@@ -10,7 +11,10 @@ export async function POST(req: Request) {
     const event = stripe.webhooks.constructEvent(body, signature, env.STRIPE_WEBHOOK_SECRET)
     switch (event.type) {
       case "checkout.session.completed":
-        HandleCheckoutSessionCompleted(event.data.object)
+        await HandleCheckoutSessionCompleted(event.data.object)
+        break
+      default:
+        break
     }
 
     return new NextResponse(null, { status: 200 })

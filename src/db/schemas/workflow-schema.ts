@@ -84,6 +84,16 @@ export const userBalance = pgTable('user_balance', {
 });
 
 
+export const userPurchase = pgTable('user_purchase', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id').notNull(),
+  stripeId: text('stripe_id').notNull(),
+  description: text('description').notNull(),
+  amount: integer('amount').notNull(),
+  currency: text('currency').notNull(),
+  date: timestamp('created_at').notNull().defaultNow(),
+});
+
 // Relations
 export const workflowRelations = relations(workflows, ({ many }) => ({
   executions: many(workflowExecutions),

@@ -1,7 +1,7 @@
 "use server"
 
 import { auth } from "@/auth"
-import { stripe } from "@/lib/stripe"
+import { stripe } from "@/lib/stripe/stripe"
 import { GetSelectedCreditPack } from "@/lib/workflow/helpers"
 import { PackId } from "@/types/pricing-types"
 import { redirect } from "next/navigation"

@@ -62,5 +62,6 @@ export const {
   workflowExecutions,
   workflowExecutionPhaseLogs,
   userBalance,
-  credentials
+  credentials,
+  userPurchase
 } = schema;
